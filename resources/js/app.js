@@ -1,33 +1,74 @@
+$(document).ready(function() {
+    setTimeout(() => {
+        $('body').removeClass('loading'); // remove loader overlay when page is ready with 1 sec delay
+    }, 1000);
+    $('form.ajax-submit').on('submit', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var method = $(this).attr('method');
+        var url = $(this).attr('action');
+        var data = $(this).serializeArray();
+        var confirmation = $(this).attr('confirmation');
+        var confirmation_note = $(this).attr('confirmation-note');
+        var confirmation_cancelled_note = $(this).attr('confirmation-cancelled-note');
+        
+        if (confirmation) {
+            swal({
+                title: "Are you sure?",
+                text:  !confirmation_note ? "Once deleted, you may not be able to recover this data." :  confirmation_note,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    submitForm(form, method, url, data);
+                } else {
+                    swal("Cancelled action",  !confirmation_cancelled_note ? "Data is retain." :  confirmation_cancelled_note);
+                }
+            });
+        } else {
+            submitForm(form, method, url, data);
+        } 
+    });
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+    function submitForm(form, method, url, data) {
+        toastr.options.positionClass = 'toast-bottom-right';
+        toastr.options.extendedTimeOut = 1000;
+        toastr.options.timeOut = 2000;
+        toastr.options.fadeOut = 250;
+        toastr.options.fadeIn = 250;
 
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-const app = new Vue({
-    el: '#app'
+        $.ajax({
+            type : method,
+            url: url,
+            data : data,
+            dataType : 'json',
+            processData: true,
+            success : function(data) {
+                if (data.resetForm) {
+                    form.trigger("reset");
+                }
+                if (data.redirect !== 'undefined') {
+                    toastr.success('Redirecting please wait...');
+					setTimeout(function() {
+						window.location = data.redirect;
+					}, 2500);
+                }
+                if (data.notifMessage !== 'undefined') {
+                    toastr.success(data.notifMessage);
+                }
+            },
+            error : function(data, text, error) {
+                if (data.responseJSON.message.length) {
+                    for (let index = 0; index < data.responseJSON.message.length; index++) {
+                        const message = data.responseJSON.message[index];
+                        toastr.warning(message);
+                    }
+                } else if (data.responseJSON.notifMessage.length) {
+                    toastr.warning(data.responseJSON.notifMessage);
+                }
+            }
+        });
+    }
 });
