@@ -4,7 +4,7 @@
 - [Install Node](https://nodejs.org/en/download).
 
 ## Project Start Guide
-### do this at the start
+### do this at the start.
 ```sh
 composer update
 npm install
@@ -16,7 +16,7 @@ php artisan migrate --seed
 ```
 
 ## Project Development Guide
-### run laravel mixer to compile assets
+### run laravel mixer to compile project assets.
 ```sh
 npm run watch
 ```
