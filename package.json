@@ -26,6 +26,7 @@
     "dependencies": {
         "@material/textfield": "^1.1.0",
         "startbootstrap-sb-admin-2": "^4.0.3",
+        "sweetalert": "^2.1.2",
         "toastr": "^2.1.4"
     }
 }

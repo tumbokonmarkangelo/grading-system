@@ -24,6 +24,7 @@ mix.styles([
             'node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.js',
             'node_modules/chart.js/dist/Chart.min.js',
             'node_modules/toastr/build/toastr.min.js',
+            'node_modules/sweetalert/dist/sweetalert.min.js',
             ],
             'public/js/all.js')
     .copyDirectory('resources/img', 'public/img')

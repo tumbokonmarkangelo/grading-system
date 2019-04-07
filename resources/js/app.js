@@ -1,11 +1,38 @@
 $(document).ready(function() {
+    setTimeout(() => {
+        $('body').removeClass('loading'); // remove loader overlay when page is ready with 1 sec delay
+    }, 1000);
     $('form.ajax-submit').on('submit', function (e) {
         e.preventDefault();
         var form = $(this);
         var method = $(this).attr('method');
         var url = $(this).attr('action');
         var data = $(this).serializeArray();
+        var confirmation = $(this).attr('confirmation');
+        var confirmation_note = $(this).attr('confirmation-note');
+        var confirmation_cancelled_note = $(this).attr('confirmation-cancelled-note');
         
+        if (confirmation) {
+            swal({
+                title: "Are you sure?",
+                text:  !confirmation_note ? "Once deleted, you may not be able to recover this data." :  confirmation_note,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    submitForm(form, method, url, data);
+                } else {
+                    swal("Cancelled action",  !confirmation_cancelled_note ? "Data is retain." :  confirmation_cancelled_note);
+                }
+            });
+        } else {
+            submitForm(form, method, url, data);
+        } 
+    });
+
+    function submitForm(form, method, url, data) {
         toastr.options.positionClass = 'toast-bottom-right';
         toastr.options.extendedTimeOut = 1000;
         toastr.options.timeOut = 2000;
@@ -43,5 +70,5 @@ $(document).ready(function() {
                 }
             }
         });
-    });
+    }
 });

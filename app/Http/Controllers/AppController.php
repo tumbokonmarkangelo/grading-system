@@ -57,5 +57,17 @@ class AppController extends Controller
             ->with('students', $students);
     }
 
+    public function subjects_management(Request $request)
+    {
+        return view('subjects-management')
+            ->with('page_name', 'Subjects Management');
+    }
+
+    public function classes_management(Request $request)
+    {
+        return view('classes-management')
+            ->with('page_name', 'Classes Management');
+    }
+
 
 }

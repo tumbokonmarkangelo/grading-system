@@ -47,8 +47,26 @@ class UserController extends Controller
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->save();
             
-            $response['notifMessage'] = 'Save successful.';
+            $response['notifMessage'] = 'Saved request.';
             $response['resetForm'] = true;
+            $response['redirect'] = route('UsersManagement');
+            $status = 201;
+        }
+
+        return response($response, $status);
+    }
+
+    public function delete(Request $request)
+    {
+        $input = $request->all();
+        
+        if (empty($input['id'])) {
+            $response['notifMessage'] = 'Failed request.';
+            $status = 422;
+        } else {
+            User::destroy($input['id']);
+            
+            $response['notifMessage'] = 'Deletion request complete.';
             $response['redirect'] = route('UsersManagement');
             $status = 201;
         }

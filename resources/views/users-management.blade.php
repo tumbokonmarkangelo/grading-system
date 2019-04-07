@@ -14,12 +14,12 @@
         @endif
         @if ($teachers->count())
         <li class="nav-item">
-            <a class="nav-link" id="teachers-tab" data-toggle="tab" href="#teachers" role="tab" aria-controls="teachers" aria-selected="false">Teachers</a>
+            <a class="nav-link {{ $students->count() == 0 ? 'active' : '' }}" id="teachers-tab" data-toggle="tab" href="#teachers" role="tab" aria-controls="teachers" aria-selected="false">Teachers</a>
         </li>
         @endif
         @if ($admins->count())
         <li class="nav-item">
-            <a class="nav-link" id="admins-tab" data-toggle="tab" href="#admins" role="tab" aria-controls="admins" aria-selected="false">Admins</a>
+            <a class="nav-link {{ $students->count() == 0 && $teachers->count() == 0 ? 'active' : '' }}" id="admins-tab" data-toggle="tab" href="#admins" role="tab" aria-controls="admins" aria-selected="false">Admins</a>
         </li>
         @endif
     </ul>
@@ -35,6 +35,7 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +56,12 @@
                                 <td>
                                     {{ $student->email }}
                                 </td>
+                                <td>
+                                    <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
+                                        <input type="hidden" value="{{ $student->id }}" name="id">
+                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -63,7 +70,7 @@
         </div>
         @endif
         @if ($teachers->count())
-        <div class="tab-pane fade show" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
+        <div class="tab-pane fade show {{ $students->count() == 0 ? 'active' : '' }}" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <div class="user-table-container">
                 <table class="table table-striped table-sm">
                     <thead>
@@ -72,6 +79,8 @@
                             <th scope="col">Username</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +98,15 @@
                                 <td>
                                     {{ $teacher->last_name }}
                                 </td>
+                                <td>
+                                    {{ $teacher->email }}
+                                </td>
+                                <td>
+                                    <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
+                                        <input type="hidden" value="{{ $teacher->id }}" name="id">
+                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -97,7 +115,7 @@
         </div>
         @endif
         @if ($admins->count())
-        <div class="tab-pane fade show" id="admins" role="tabpanel" aria-labelledby="admins-tab">
+        <div class="tab-pane fade show {{ $students->count() == 0 && $teachers->count() == 0 ? 'active' : '' }}" id="admins" role="tabpanel" aria-labelledby="admins-tab">
             <div class="user-table-container">
                 <table class="table table-striped table-sm">
                     <thead>
@@ -106,6 +124,8 @@
                             <th scope="col">Username</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,6 +142,15 @@
                                 </td>
                                 <td>
                                     {{ $admin->last_name }}
+                                </td>
+                                <td>
+                                    {{ $admin->email }}
+                                </td>
+                                <td>
+                                    <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
+                                        <input type="hidden" value="{{ $admin->id }}" name="id">
+                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
