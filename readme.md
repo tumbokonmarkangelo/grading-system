@@ -4,16 +4,25 @@
 - [Install Node](https://nodejs.org/en/download).
 
 ## Project Start Guide
-# DO THIS AT THE START
+### do this at the start
 ```sh
 composer update
 npm install
 npm run dev
+```
 - Create database named 'grading_system' as what set on .env then do the step below.
+```sh
 php artisan migrate --seed 
 ```
 
 ## Project Development Guide
-php arisan serve
+### run laravel mixer to compile assets
+```sh
 npm run watch
+```
+
+## Project Test Guide
+```sh
+php arisan serve
+```
 - [See running project on](http://127.0.0.1:8000).
