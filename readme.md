@@ -5,11 +5,13 @@
 
 ## Project Start Guide
 # DO THIS AT THE START
+```sh
 composer update
 npm install
 npm run dev
-- [Create database named "grading_system" as what set on .env](then do the step below).
+- Create database named 'grading_system' as what set on .env then do the step below.
 php artisan migrate --seed 
+```
 
 ## Project Development Guide
 php arisan serve
