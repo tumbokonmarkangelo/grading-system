@@ -3,7 +3,44 @@
 @section('content')
 <div class="subjects-management">
     <div class="add-subjects">
-        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#createSubjectModal"><i class="fas fa-plus-circle fa-sm"></i> Create New Subject</button>
+        <a href="{{ route('CreateSubject') }}" class="btn btn-success"><i class="fas fa-plus-circle fa-sm"></i> Create New Subject</a>
     </div>
+    
+    @if ($data->count())
+    <div class="table-container-listing">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Description</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $key => $d)
+                    <tr>
+                        <th scope="row">
+                            {{ $d->id }}
+                        </th>
+                        <td>
+                            {{ $d->code }}
+                        </td>
+                        <td>
+                            {{ $d->description }}
+                        </td>
+                        <td class="text-center">
+                            <form confirmation="true" class="ajax-submit" action="{{ route('DeleteSubject') }}" method="post">
+                                <input type="hidden" value="{{ $d->id }}" name="id">
+                                <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                <a href="{{ route('EditSubject', [$d->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
 </div>
 @stop

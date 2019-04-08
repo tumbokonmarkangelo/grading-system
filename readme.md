@@ -23,6 +23,6 @@ npm run watch
 
 ## Project Test Guide
 ```sh
-php arisan serve
+php artisan serve
 ```
 - [See running project on](http://127.0.0.1:8000).
