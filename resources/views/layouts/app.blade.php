@@ -9,6 +9,8 @@
 
   <title>{{ !empty($page_title) ? $page_title : 'DILIMAN COLLAGE GRADING SYSTEM' }}</title>
   <meta name="csrf-token" content="{{ csrf_token() }}" />
+  
+  <link rel="icon" type="image/png" href="{{ asset('img/dclogo.png') }}">
 
   <link rel="stylesheet" href="{{ asset('/css/all.css') }}">
   <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
@@ -235,7 +237,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 @include('modals.logout')
-@include('modals.create-user')
 
 <div class="loading-overlay">
     <img src="{{ asset('img/loader.svg') }}">

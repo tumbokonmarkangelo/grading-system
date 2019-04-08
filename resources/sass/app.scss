@@ -148,3 +148,14 @@ body {
     margin-bottom: 20px;
   }
 }
+
+.form-group {
+
+  textarea.form-control {
+    resize: none;
+  }
+}
+
+.table-container-listing {
+  padding: 20px 0; 
+}
