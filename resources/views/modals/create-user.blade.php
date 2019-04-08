@@ -8,7 +8,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="createUser" class="ajax-submit" action="{{ route('CreateUser') }}" method="post">
+                    <form id="createUser" class="ajax-submit" action="{{ route('CreateUser') }}" method="post" autocomplete="off">
                         <h5>User Information</h5>
                         <div class="form-group">
                             <div class="row">
@@ -43,13 +43,13 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <input type="text" name="username" placeholder="Username" class="form-control" required autocomplete="off">
+                                    <input type="text" name="username" placeholder="Username" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="email" name="email" placeholder="Email" class="form-control" autocomplete="off">
+                                    <input type="email" name="email" placeholder="Email" class="form-control">
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="password" name="password" placeholder="Password" class="form-control" required autocomplete="off">
+                                    <input type="password" name="password" placeholder="Password" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-secondary" type="submit" form="createUser">Save</button>
+                <button class="btn btn-info" type="submit" form="createUser">Save</button>
             </div>
         </div>
     </div>

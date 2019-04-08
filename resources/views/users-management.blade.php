@@ -35,7 +35,7 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,10 +56,11 @@
                                 <td>
                                     {{ $student->email }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $student->id }}" name="id">
                                         <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                        <a href="{{ route('EditUser', [$student->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
                                     </form>
                                 </td>
                             </tr>
@@ -80,7 +81,7 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,10 +102,11 @@
                                 <td>
                                     {{ $teacher->email }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $teacher->id }}" name="id">
                                         <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                        <a href="{{ route('EditUser', [$teacher->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
                                     </form>
                                 </td>
                             </tr>
@@ -125,7 +127,7 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Action</th>
+                            <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,10 +148,11 @@
                                 <td>
                                     {{ $admin->email }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $admin->id }}" name="id">
                                         <button class="btn btn-info btn-sm" type="submit">Delete</button>
+                                        <a href="{{ route('EditUser', [$admin->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
                                     </form>
                                 </td>
                             </tr>
@@ -161,4 +164,5 @@
         @endif
     </div>
 </div>
+@include('modals.create-user')
 @stop

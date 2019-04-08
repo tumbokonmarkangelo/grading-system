@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Subject;
+use App\Classes;
 
 class AppController extends Controller
 {
@@ -59,14 +61,18 @@ class AppController extends Controller
 
     public function subjects_management(Request $request)
     {
+        $data = Subject::get();
         return view('subjects-management')
-            ->with('page_name', 'Subjects Management');
+            ->with('page_name', 'Subjects Management')
+            ->with('data', $data);
     }
 
     public function classes_management(Request $request)
     {
+        $data = Classes::get();
         return view('classes-management')
-            ->with('page_name', 'Classes Management');
+            ->with('page_name', 'Classes Management')
+            ->with('data', $data);
     }
 
 

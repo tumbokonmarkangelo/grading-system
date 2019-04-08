@@ -3,6 +3,7 @@ $(document).ready(function() {
         $('body').removeClass('loading'); // remove loader overlay when page is ready with 1 sec delay
     }, 1000);
     $('form.ajax-submit').on('submit', function (e) {
+        console.log('asd');
         e.preventDefault();
         var form = $(this);
         var method = $(this).attr('method');
@@ -49,13 +50,13 @@ $(document).ready(function() {
                 if (data.resetForm) {
                     form.trigger("reset");
                 }
-                if (data.redirect !== 'undefined') {
+                if (data.redirect !== undefined) {
                     toastr.success('Redirecting please wait...');
 					setTimeout(function() {
 						window.location = data.redirect;
 					}, 2500);
                 }
-                if (data.notifMessage !== 'undefined') {
+                if (data.notifMessage !== undefined) {
                     toastr.success(data.notifMessage);
                 }
             },
