@@ -21,6 +21,8 @@
                                 @endforeach
                             </select>
                         </div>
+                    @else
+                    <h5><i class="fas fa-info-circle fa-sm"></i> No Assigned Subjects</h5>
                     @endif
                     </div>
                     <!-- <div class="col-md-2">
