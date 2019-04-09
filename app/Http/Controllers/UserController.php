@@ -62,6 +62,7 @@ class UserController extends Controller
         
         return view('admin.users.edit')
             ->with('page_name', 'Edit User')
+            ->with('page_description', $user->updated_at ? '(last update: '.$user->updated_at->diffForHumans().')' : '')
             ->with('data', $user);
     }
 
@@ -77,7 +78,7 @@ class UserController extends Controller
             'last_name' => 'required|max:191',
             'email' => 'unique:users|max:191',
             // 'username' => 'required|unique:users|max:191',
-            'password' => 'required|max:191',
+            'password' => 'max:191',
             'type' => 'required|in:admin,teacher,student',
         ]);
 

@@ -29,17 +29,27 @@ Route::get('/panel', array('as'=>'User','uses'=>'AppController@index'))->middlew
 Route::get('/panel/users/management', array('as'=>'UsersManagement','uses'=>'AppController@users_management'))->middleware('auth');
 Route::get('/panel/subjects/management', array('as'=>'SubjectsManagement','uses'=>'AppController@subjects_management'))->middleware('auth');
 Route::get('/panel/classes/management', array('as'=>'ClassesManagement','uses'=>'AppController@classes_management'))->middleware('auth');
+Route::get('/panel/grades/management', array('as'=>'GradesManagement','uses'=>'GradeController@index'))->middleware('auth');
 
 // subject management routes 
-Route::get('/subject/create', array('as'=>'CreateSubject','uses'=>'SubjectController@create'));
-Route::post('/subject/store', array('as'=>'StoreSubject','uses'=>'SubjectController@store'));
-Route::get('/subject/edit/{id}', array('as'=>'EditSubject','uses'=>'SubjectController@edit'));
-Route::patch('/subject/update/{id}', array('as'=>'UpdateSubject','uses'=>'SubjectController@update'));
-Route::post('/subject/delete', array('as'=>'DeleteSubject','uses'=>'SubjectController@delete'));
+Route::get('/subject/create', array('as'=>'CreateSubject','uses'=>'SubjectController@create'))->middleware('auth');
+Route::post('/subject/store', array('as'=>'StoreSubject','uses'=>'SubjectController@store'))->middleware('auth');
+Route::get('/subject/edit/{id}', array('as'=>'EditSubject','uses'=>'SubjectController@edit'))->middleware('auth');
+Route::patch('/subject/update/{id}', array('as'=>'UpdateSubject','uses'=>'SubjectController@update'))->middleware('auth');
+Route::post('/subject/delete', array('as'=>'DeleteSubject','uses'=>'SubjectController@delete'))->middleware('auth');
 
 // classes management routes 
-Route::get('/class/create', array('as'=>'CreateClass','uses'=>'ClassController@create'));
-Route::post('/class/store', array('as'=>'StoreClass','uses'=>'ClassController@store'));
-Route::get('/class/edit/{id}', array('as'=>'EditClass','uses'=>'ClassController@edit'));
-Route::patch('/class/update/{id}', array('as'=>'UpdateClass','uses'=>'ClassController@update'));
-Route::post('/class/delete', array('as'=>'DeleteClass','uses'=>'ClassController@delete'));
+Route::get('/class/create', array('as'=>'CreateClass','uses'=>'ClassController@create'))->middleware('auth');
+Route::post('/class/store', array('as'=>'StoreClass','uses'=>'ClassController@store'))->middleware('auth');
+Route::get('/class/edit/{id}', array('as'=>'EditClass','uses'=>'ClassController@edit'))->middleware('auth');
+Route::patch('/class/update/{id}', array('as'=>'UpdateClass','uses'=>'ClassController@update'))->middleware('auth');
+Route::post('/class/delete', array('as'=>'DeleteClass','uses'=>'ClassController@delete'))->middleware('auth');
+Route::get('/class/manage/{id}/subject', array('as'=>'ManageClassSubject','uses'=>'ClassController@manage_subject'))->middleware('auth');
+Route::patch('/class/update/{id}/subject', array('as'=>'UpdateClassSubject','uses'=>'ClassController@update_subject'))->middleware('auth');
+Route::get('/class/subject/manage/{id}/computation', array('as'=>'ManageClassSubjectComputaion','uses'=>'ClassController@manage_subject_computaion'))->middleware('auth');
+Route::patch('/class/subject/update/{id}/computation', array('as'=>'UpdateClassSubjectComputaion','uses'=>'ClassController@update_subject_computaion'))->middleware('auth');
+Route::get('/class/manage/{id}/student', array('as'=>'ManageClassStudent','uses'=>'ClassController@manage_student'))->middleware('auth');
+Route::patch('/class/update/{id}/student', array('as'=>'UpdateClassStudent','uses'=>'ClassController@update_student'))->middleware('auth');
+
+// grades management routes
+Route::post('/grades/assign/{id}', array('as'=>'AssignGrades','uses'=>'GradeController@assign'))->middleware('auth');

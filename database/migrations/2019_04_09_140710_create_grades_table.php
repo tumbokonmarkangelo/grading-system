@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClassesTable extends Migration
+class CreateGradesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateClassesTable extends Migration
      */
     public function up()
     {
-        Schema::create('classes', function (Blueprint $table) {
+        Schema::create('grades', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code')->nullable();
-            $table->integer('semester_id')->nullable();
-            $table->integer('year_id')->nullable();
-            $table->enum('status', ['active', 'archive'])->default('active');
+            $table->integer('classes_subject_id');
+            $table->integer('student_id');
+            $table->double('computed_grade', 8, 2);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +30,6 @@ class CreateClassesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes');
+        Schema::dropIfExists('grades');
     }
 }
