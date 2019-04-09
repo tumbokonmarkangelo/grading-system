@@ -56,6 +56,7 @@ class SubjectController extends Controller
         
         return view('admin.subjects.edit')
             ->with('page_name', 'Edit Subject')
+            ->with('page_description', '(id:'.$data->id.')')
             ->with('data', $data);
     }
 

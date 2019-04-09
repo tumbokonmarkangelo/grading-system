@@ -40,17 +40,57 @@ class UsersTableSeeder extends Seeder
             'first_name' => 'Teacher',
             'middle_name' => '',
             'last_name' => 'Juan',
-            'email' => 'diliman_grading_system_teacher@gmail.com',
+            'email' => 'diliman_grading_system_teacher1@gmail.com',
             'username' => 'teacher1',
             'email_verified_at' => now(),
             'type' => 'teacher',
             'password' => bcrypt('password')
         ]);
         DB::table('users')->insert([
+            'first_name' => 'Teacher',
+            'middle_name' => '',
+            'last_name' => 'Tu',
+            'email' => 'diliman_grading_system_teacher2@gmail.com',
+            'username' => 'teacher1',
+            'email_verified_at' => now(),
+            'type' => 'teacher',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Teacher',
+            'middle_name' => '',
+            'last_name' => 'Tres',
+            'email' => 'diliman_grading_system_teacher3@gmail.com',
+            'username' => 'student1',
+            'email_verified_at' => now(),
+            'type' => 'student',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
             'first_name' => 'Student',
             'middle_name' => '',
             'last_name' => 'Juan',
-            'email' => 'diliman_grading_system_student@gmail.com',
+            'email' => 'diliman_grading_system_student1@gmail.com',
+            'username' => 'student1',
+            'email_verified_at' => now(),
+            'type' => 'student',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Student',
+            'middle_name' => '',
+            'last_name' => 'Tu',
+            'email' => 'diliman_grading_system_student2@gmail.com',
+            'username' => 'student1',
+            'email_verified_at' => now(),
+            'type' => 'student',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Student',
+            'middle_name' => '',
+            'last_name' => 'Tres',
+            'email' => 'diliman_grading_system_student3@gmail.com',
             'username' => 'student1',
             'email_verified_at' => now(),
             'type' => 'student',

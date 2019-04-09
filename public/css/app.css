@@ -153,3 +153,47 @@ body.loading > .loading-overlay {
   padding: 20px 0;
 }
 
+input.readonly-input {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.action-container {
+  display: grid;
+  align-items: center;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  grid-gap: 10px;
+}
+
+.action-container button .default-view {
+  display: block;
+}
+
+.action-container button .default-view.hide {
+  display: none;
+}
+
+.action-container button .switch-view {
+  display: none;
+}
+
+.action-container button .switch-view.show {
+  display: block;
+}
+
+.row-template-container {
+  display: none;
+}
+
+.select2-container {
+  display: grid;
+  align-content: center;
+}
+
+.select2-container select.select2-hidden-accessible {
+  height: 100% !important;
+  width: 100% !important;
+}
+

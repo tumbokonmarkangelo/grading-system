@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-4">
             <label for="code">Class code</label>
-            <input id="code" type="text" name="code" placeholder="Class code" class="form-control">
+            <input id="code" type="text" name="code" placeholder="Class code" class="form-control" required>
         </div>
     </div>
 </div>

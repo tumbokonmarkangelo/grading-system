@@ -3,7 +3,7 @@
 @section('content')
 <div class="classes-management">
     <div class="add-classes">
-        <a href="{{ route('CreateClass') }}" class="btn btn-success"><i class="fas fa-plus-circle fa-sm"></i> Create New Class</a>
+        <a href="{{ route('CreateClass') }}" class="btn btn-success btn-sm"><i class="fas fa-plus-circle fa-sm"></i> Create New Class</a>
     </div>
     
     @if ($data->count())
@@ -28,8 +28,8 @@
                         <td class="text-center">
                             <form confirmation="true" class="ajax-submit" action="{{ route('DeleteClass') }}" method="post">
                                 <input type="hidden" value="{{ $d->id }}" name="id">
-                                <button class="btn btn-info btn-sm" type="submit">Delete</button>
-                                <a href="{{ route('EditClass', [$d->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
+                                <a href="{{ route('EditClass', [$d->id]) }}" class="btn btn-success btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>

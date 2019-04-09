@@ -201,10 +201,16 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    @if (!empty($page_name))
-                        <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">{{ $page_name }}</h1>
-                    @endif
+                    <div class="page-header-container mb-4"> 
+                        @if (!empty($page_name))
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-0 text-gray-800">{{ $page_name }}</h1>
+                        @endif
+                        @if (!empty($page_description))
+                            <!-- Page Heading -->
+                            <p class="mb-0">{{ $page_description }}</p>
+                        @endif
+                    </div>
                     <div class="content-container">
                         @yield('content')
                     </div>
@@ -262,6 +268,7 @@
         console.log('{{ Session::get('message') }}');
     </script>
   @endif
+  @yield('form-helper-scripts')
   @yield('added-scripts')
 </body>
 </html>

@@ -20,4 +20,14 @@ class Classes extends Model
     protected $casts = [
         'deleted_at' => 'string',
     ];
+
+    public function subjects()
+    {
+        return $this->hasMany('App\ClassesSubject', 'class_id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany('App\ClassesStudent', 'class_id');
+    }
 }

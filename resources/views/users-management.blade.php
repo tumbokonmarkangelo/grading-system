@@ -3,7 +3,7 @@
 @section('content')
 <div class="user-management">
     <div class="add-user">
-        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#createUserModal"><i class="fas fa-plus-circle fa-sm"></i> Create New User</button>
+        <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#createUserModal"><i class="fas fa-plus-circle fa-sm"></i> Create New User</button>
     </div>
     
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -59,8 +59,8 @@
                                 <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $student->id }}" name="id">
-                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
                                         <a href="{{ route('EditUser', [$student->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -105,8 +105,8 @@
                                 <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $teacher->id }}" name="id">
-                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
                                         <a href="{{ route('EditUser', [$teacher->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -151,8 +151,8 @@
                                 <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $admin->id }}" name="id">
-                                        <button class="btn btn-info btn-sm" type="submit">Delete</button>
-                                        <a href="{{ route('EditUser', [$admin->id]) }}" class="btn btn-success btn-sm" type="Edit">Edit</a>
+                                        <a href="{{ route('EditUser', [$admin->id]) }}" class="btn btn-success btn-sm">Edit</a>
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                                     </form>
                                 </td>
                             </tr>

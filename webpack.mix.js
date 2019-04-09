@@ -15,6 +15,7 @@ mix.styles([
             'node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.css',
             'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
             'node_modules/toastr/build/toastr.min.css',
+            'node_modules/select2/dist/css/select2.min.css',
             ],
             'public/css/all.css')
     .scripts([
@@ -25,6 +26,7 @@ mix.styles([
             'node_modules/chart.js/dist/Chart.min.js',
             'node_modules/toastr/build/toastr.min.js',
             'node_modules/sweetalert/dist/sweetalert.min.js',
+            'node_modules/select2/dist/js/select2.min.js',
             ],
             'public/js/all.js')
     .copyDirectory('resources/img', 'public/img')

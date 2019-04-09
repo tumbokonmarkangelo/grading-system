@@ -43,3 +43,7 @@ Route::post('/class/store', array('as'=>'StoreClass','uses'=>'ClassController@st
 Route::get('/class/edit/{id}', array('as'=>'EditClass','uses'=>'ClassController@edit'));
 Route::patch('/class/update/{id}', array('as'=>'UpdateClass','uses'=>'ClassController@update'));
 Route::post('/class/delete', array('as'=>'DeleteClass','uses'=>'ClassController@delete'));
+Route::get('/class/manage/{id}/subject', array('as'=>'ManageClassSubject','uses'=>'ClassController@manage_subject'));
+Route::patch('/class/update/{id}/subject', array('as'=>'UpdateClassSubject','uses'=>'ClassController@update_subject'));
+Route::get('/class/manage/{id}/student', array('as'=>'ManageClassStudent','uses'=>'ClassController@manage_student'));
+Route::patch('/class/update/{id}/student', array('as'=>'UpdateClassStudent','uses'=>'ClassController@update_student'));

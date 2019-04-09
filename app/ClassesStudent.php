@@ -20,4 +20,9 @@ class ClassesStudent extends Model
     protected $casts = [
         'deleted_at' => 'string',
     ];
+    
+    public function student()
+	{
+		return $this->hasOne('App\User', 'id', 'student_id');
+	}
 }

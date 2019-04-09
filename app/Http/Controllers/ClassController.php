@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Classes;
+use App\Subject;
+use App\User;
+use App\ClassesSubject;
+use App\ClassesStudent;
 use Validator;
 
 class ClassController extends Controller
@@ -55,6 +59,7 @@ class ClassController extends Controller
         
         return view('admin.classes.edit')
             ->with('page_name', 'Edit Class')
+            ->with('page_description', '(id:'.$data->id.')')
             ->with('data', $data);
     }
 
@@ -101,4 +106,139 @@ class ClassController extends Controller
         return response($response, $status);
     }
 
+
+    public function manage_subject($id)
+    {
+        $data = Classes::find($id);
+        $subjects = Subject::get();
+        $teachers = User::where('type', 'teacher')->get();
+        
+        
+        return view('admin.classes.manage.subjects')
+            ->with('page_name', 'Edit Class Subjects')
+            ->with('page_description', '(Class code: '.$data->code.')')
+            ->with('subjects', $subjects)
+            ->with('teachers', $teachers)
+            ->with('data', $data)
+            ->with('json_data', json_encode($data));
+    }
+
+    public function update_subject(Request $request, $id)
+    {
+        $input = $request->all();
+
+        $subjects;
+        foreach ($input['id'] as $key => $subject_id) {
+            foreach ($input as $key_name => $value) {
+                if (!empty($value[$key])) {
+                    $subjects[$key][$key_name] = $value[$key];
+                }
+            }
+        }
+        
+        foreach ($subjects as $key => $subject) {
+            if (empty($validator) || !$validator->fails()) {
+                if (!empty($subject['action']) && $subject['action'] == 'delete') {
+                    $validator = Validator::make($subject, [
+                        'id' => 'required|integer',
+                    ]);
+                } else {
+                    $validator = Validator::make($subject, [
+                        'class_id' => 'required|integer',
+                        'subject_id' => 'required|integer',
+                        'teacher_id' => 'required|integer',
+                    ]);
+                }
+            }
+        }
+
+        if (empty($validator) || $validator->fails()) {
+            $response['notifMessage'] = 'Failed request.';
+            $response['message'] = ['Check required fields.'];
+            $status = 422;
+        } else {
+            foreach ($subjects as $key => $subject) {
+                if (empty($subject['action'])) {
+                    $data = ClassesSubject::create($subject);
+                } else if ($subject['action'] == 'edit') {
+                    $data = ClassesSubject::find($subject['id']);
+                    $data->update($input);
+                } else if ($subject['action'] == 'delete') {
+                    ClassesSubject::destroy($input['id']);
+                }
+            }
+            
+            $response['notifMessage'] = 'Update request saved.';
+            $response['redirect'] = route('ManageClassSubject', [$id]);
+            $status = 201;
+        }
+
+        return response($response, $status);
+    }
+
+    public function manage_student($id)
+    {
+        $data = Classes::find($id);
+        $students = User::where('type', 'student')->get();
+        
+        
+        return view('admin.classes.manage.students')
+            ->with('page_name', 'Edit Class Subjects')
+            ->with('page_description', '(Class code: '.$data->code.')')
+            ->with('students', $students)
+            ->with('data', $data)
+            ->with('json_data', json_encode($data));
+    }
+
+    public function update_student(Request $request, $id)
+    {
+        $input = $request->all();
+
+        $subjects;
+        foreach ($input['id'] as $key => $subject_id) {
+            foreach ($input as $key_name => $value) {
+                if (!empty($value[$key])) {
+                    $subjects[$key][$key_name] = $value[$key];
+                }
+            }
+        }
+        
+        foreach ($subjects as $key => $subject) {
+            if (empty($validator) || !$validator->fails()) {
+                if (!empty($subject['action']) && $subject['action'] == 'delete') {
+                    $validator = Validator::make($subject, [
+                        'id' => 'required|integer',
+                    ]);
+                } else {
+                    $validator = Validator::make($subject, [
+                        'class_id' => 'required|integer',
+                        'student_id' => 'required|integer',
+                    ]);
+                }
+            }
+        }
+
+        if (empty($validator) || $validator->fails()) {
+            $response['notifMessage'] = 'Failed request.';
+            $response['message'] = ['Check required fields.'];
+            $status = 422;
+        } else {
+            foreach ($subjects as $key => $subject) {
+                if (empty($subject['action'])) {
+                    $data = ClassesStudent::create($subject);
+                } else if ($subject['action'] == 'edit') {
+                    $data = ClassesStudent::find($subject['id']);
+                    $data->update($input);
+                } else if ($subject['action'] == 'delete') {
+                    ClassesStudent::destroy($input['id']);
+                }
+            }
+            
+            $response['notifMessage'] = 'Update request saved.';
+            $response['redirect'] = route('ManageClassStudent', [$id]);
+            $status = 201;
+        }
+
+        return response($response, $status);
+    }
 }

@@ -62,6 +62,7 @@ class UserController extends Controller
         
         return view('admin.users.edit')
             ->with('page_name', 'Edit User')
+            ->with('page_description', '(id:'.$user->id.')')
             ->with('data', $user);
     }
 
