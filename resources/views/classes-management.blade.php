@@ -17,6 +17,7 @@
                     <th scope="col">Code</th>
                     <th scope="col">Semester</th>
                     <th scope="col">Year Level</th>
+                    <th scope="col">Status</th>
                     @if (!empty($user = Auth::user()) && $user->type == 'admin')
                     <th scope="col" class="text-center">Action</th>
                     @endif
@@ -37,6 +38,9 @@
                         </td>
                         <td>
                             {{ @$d->year_level->name }}
+                        </td>
+                        <td>
+                            {{ @$d->status }}
                         </td>
                         @if (!empty($user = Auth::user()) && $user->type == 'admin')
                         <td class="text-center">

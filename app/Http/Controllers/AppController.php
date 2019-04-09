@@ -75,6 +75,7 @@ class AppController extends Controller
             $data = $data->whereHas('subjects', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
             });
+            $data = $data->where('status', 'active');
         }
         $data = $data->orderBy('code', 'asc')->get();
         
