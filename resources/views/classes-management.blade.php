@@ -2,9 +2,11 @@
 
 @section('content')
 <div class="classes-management">
+    @if (!empty($user = Auth::user()) && $user->type == 'admin')
     <div class="add-classes">
         <a href="{{ route('CreateClass') }}" class="btn btn-success btn-sm"><i class="fas fa-plus-circle fa-sm"></i> Create New Class</a>
     </div>
+    @endif
     
     @if ($data->count())
     <div class="table-container-listing">
@@ -15,7 +17,9 @@
                     <th scope="col">Code</th>
                     <th scope="col">Semester</th>
                     <th scope="col">Year Level</th>
+                    @if (!empty($user = Auth::user()) && $user->type == 'admin')
                     <th scope="col" class="text-center">Action</th>
+                    @endif
                     <th scope="col" class="text-center">Shortcuts <i class="fas fa-link fa-sm"></i></th>
                 </tr>
             </thead>
@@ -34,6 +38,7 @@
                         <td>
                             {{ @$d->year_level->name }}
                         </td>
+                        @if (!empty($user = Auth::user()) && $user->type == 'admin')
                         <td class="text-center">
                             <form confirmation="true" class="ajax-submit" action="{{ route('DeleteClass') }}" method="post">
                                 <input type="hidden" value="{{ $d->id }}" name="id">
@@ -41,9 +46,12 @@
                                 <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                             </form>
                         </td>
+                        @endif
                         <td class="text-center">
                             <a href="{{ route('ManageClassSubject', [$d->id]) }}" class="btn btn-info btn-sm"><i class="fas fa-chalkboard-teacher fa-sm"></i> Subjects</a>
+                            @if (!empty($user = Auth::user()) && $user->type == 'admin')
                             <a href="{{ route('ManageClassStudent', [$d->id]) }}" class="btn btn-info btn-sm"><i class="fas fa-user-graduate fa-sm"></i> Student</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

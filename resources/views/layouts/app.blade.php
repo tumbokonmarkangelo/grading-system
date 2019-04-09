@@ -50,6 +50,7 @@
                 Interface
             </div>
 
+            @if (!empty($user->type) && in_array($user->type, ['admin']))
             <!-- Nav Item - Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
@@ -63,7 +64,9 @@
                     </div>
                 </div>
             </li>
+            @endif
 
+            @if (!empty($user->type) && in_array($user->type, ['admin']))
             <!-- Nav Item - Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSubjects" aria-expanded="true" aria-controls="collapseSubjects">
@@ -77,7 +80,9 @@
                     </div>
                 </div>
             </li>
+            @endif
 
+            @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
             <!-- Nav Item - Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClasses" aria-expanded="true" aria-controls="collapseClasses">
@@ -91,6 +96,7 @@
                     </div>
                 </div>
             </li>
+            @endif
 
             <!-- Nav Item - Collapse Menu -->
             <li class="nav-item">
@@ -101,7 +107,9 @@
                 <div id="collapseGrades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Module:</h6>
+                        @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
                         <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
+                        @endif
                     </div>
                 </div>
             </li>

@@ -42,26 +42,32 @@
                 </select>
             </div>
             <div class="col-md-3 text-center action-container">
+                @if (!empty($user = Auth::user()) && $user->type == 'admin')
                 <button class="btn btn-success btn-sm" type="button" value="edit"><span class="default-view">Edit</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Edit</span></button>
                 <button class="btn btn-danger btn-sm" type="button" value="delete"><span class="default-view">Delete</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Delete</span></button>
                 <input type="hidden" name="action[]" class="action-input readonly-input" disabled>
+                @endif
                 <a href="{{ route('ManageClassSubjectComputaion', [$cs->id]) }}" class="btn btn-info btn-sm">Computation</a>
             </div>
         </div>
         @endforeach
     @endif
 </div>
+@if (!empty($user = Auth::user()) && $user->type == 'admin')
 <div class="row">
     <div class="col-md-12 text-center">
         <button type="button" class="btn btn-success add-row"><i class="fas fa-plus"></i> Add new Subject</button>
     </div>
 </div>
+@endif
 <hr/>
 <div class="form-group">
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('EditClass', [$data->id]) }}" class="btn btn-secondary">Back</a>
-            <button class="btn btn-info" type="submit">Save</button>
+            <a href="{{ (!empty($user = Auth::user()) && $user->type == 'admin') ? route('EditClass', [$data->id]) : route('ClassesManagement') }}" class="btn btn-secondary">Back</a>
+            @if (!empty($user = Auth::user()) && $user->type == 'admin')
+                <button class="btn btn-info" type="submit">Save</button>
+            @endif
         </div>
     </div>
 </div>
