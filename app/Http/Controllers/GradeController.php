@@ -4,35 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Classes;
-use App\Subject;
-use App\User;
 use App\ClassesSubject;
-use App\ClassesStudent;
-use App\Semester;
-use App\YearLevel;
 use App\Computation;
 use App\Grade;
-use App\GradesItem;
 use Validator;
 
 class GradeController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $input = $request->all();
         if (!empty($input['subject'])) {
             $data = ClassesSubject::find($input['subject']);
             $students = $data->class->students;
         }
         
-        $classes = Classes::get();
+        $subjects = new ClassesSubject;
+        if ($user->type == 'teacher') {
+            $subjects = $subjects->where('teacher_id', $user->id);
+        }
+        $subjects = $subjects->orderBy('id', 'desc')->get();
 
         return view('admin.grades.index')
             ->with('page_name', 'Manage Grades')
             ->with('data', @$data)
             ->with('students', @$students)
-            ->with('classes', $classes);
+            ->with('subjects', $subjects);
     }
 
     public function assign(Request $request, $id)

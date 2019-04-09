@@ -12,6 +12,7 @@ use App\ClassesStudent;
 use App\Semester;
 use App\YearLevel;
 use App\Computation;
+use App\Grade;
 use Validator;
 
 class ClassController extends Controller
@@ -121,8 +122,8 @@ class ClassController extends Controller
     public function manage_subject($id)
     {
         $data = Classes::find($id);
-        $subjects = Subject::get();
-        $teachers = User::where('type', 'teacher')->get();
+        $subjects = Subject::orderBy('code', 'asc')->get();
+        $teachers = User::where('type', 'teacher')->orderBy('first_name', 'asc')->get();
         
         
         return view('admin.classes.manage.subjects')
@@ -196,7 +197,7 @@ class ClassController extends Controller
     public function manage_student($id)
     {
         $data = Classes::find($id);
-        $students = User::where('type', 'student')->get();
+        $students = User::where('type', 'student')->orderBy('first_name', 'asc')->get();
         
         
         return view('admin.classes.manage.students')
@@ -264,12 +265,14 @@ class ClassController extends Controller
     public function manage_subject_computaion(Request $request, $id)
     {
         $data = ClassesSubject::find($id);
+        $grade_count = Grade::where('classes_subject_id', $id)->count();
         
         return view('admin.classes.manage.computation')
             ->with('page_name', 'Edit Subject Computation')
             ->with('page_description', '(Class code: '.$data->subject->code.' - '.$data->subject->description.')')
             ->with('data', $data)
-            ->with('json_data', json_encode($data));
+            ->with('json_data', json_encode($data))
+            ->with('grade_count', $grade_count);
     }
 
     public function update_subject_computaion(Request $request, $id)
