@@ -23,6 +23,9 @@ class GradeController extends Controller
         $subjects = new ClassesSubject;
         if ($user->type == 'teacher') {
             $subjects = $subjects->where('teacher_id', $user->id);
+            $subjects = $subjects->whereHas('class', function ($query) use ($user) {
+                $query->where('status', 'active');
+            });
         }
         $subjects = $subjects->orderBy('id', 'desc')->get();
 

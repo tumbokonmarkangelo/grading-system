@@ -1,4 +1,16 @@
 <h5><i class="fas fa-info-circle fa-sm"></i> Class Details</h5>
+
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="status">Status</label>
+            <select name="status" class="form-control">
+                <option value="active">Active</option>
+                <option value="archive">Archive</option>
+            </select>
+        </div>
+    </div>
+</div>
 <div class="form-group">
     <div class="row">
         <div class="col-md-4">
