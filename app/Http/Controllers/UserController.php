@@ -62,7 +62,7 @@ class UserController extends Controller
         
         return view('admin.users.edit')
             ->with('page_name', 'Edit User')
-            ->with('page_description', '(id:'.$user->id.')')
+            ->with('page_description', $user->updated_at ? '(last update: '.$user->updated_at->diffForHumans().')' : '')
             ->with('data', $user);
     }
 

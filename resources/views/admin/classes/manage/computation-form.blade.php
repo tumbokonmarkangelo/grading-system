@@ -51,7 +51,7 @@
 <div class="form-group">
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('ManageClassSubject', [$data->id]) }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('ManageClassSubject', [$data->class_id]) }}" class="btn btn-secondary">Back</a>
             <button class="btn btn-info" type="submit">Save</button>
         </div>
     </div>

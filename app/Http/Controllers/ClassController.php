@@ -68,7 +68,7 @@ class ClassController extends Controller
         
         return view('admin.classes.edit')
             ->with('page_name', 'Edit Class')
-            ->with('page_description', '(id:'.$data->id.')')
+            ->with('page_description', $data->updated_at ? '(last update: '.$data->updated_at->diffForHumans().')' : '')
             ->with('data', $data)
             ->with('semesters', $semesters)
             ->with('year_levels', $year_levels);
@@ -173,6 +173,10 @@ class ClassController extends Controller
             foreach ($subjects as $key => $subject) {
                 if (empty($subject['action'])) {
                     $data = ClassesSubject::create($subject);
+                    $computation_template = Computation::where('classes_subject_id', 0)->get();
+                    foreach ($computation_template as $key => $computation) {
+                        $data->computations()->create($computation->toArray());
+                    }
                 } else if ($subject['action'] == 'edit') {
                     $data = ClassesSubject::find($subject['id']);
                     $data->update($subject);
