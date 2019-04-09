@@ -12,14 +12,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                    @if ($classes->count())
+                    @if ($subjects->count())
                         <div class="select2-container">
                             <select id="subject" name="subject" class="form-control select2 submit-on-change" required>
                                 <option value="">Select Subject</option>
-                                @foreach ($classes as $key => $class)
-                                    @foreach ($class->subjects as $subject_key => $subject)
-                                    <option value="{{ @$subject->id }}" {{ @$data->id == $subject->id ? 'selected' : '' }}>{{ @$subject->subject->code . ' - ' . @$subject->subject->description . ' (Class : ' . $class->code . ' - ' . @$class->semester->name . ' - ' . @$class->year_level->name . ')' }}</option>
-                                    @endforeach
+                                @foreach ($subjects as $key => $cs)
+                                    <option value="{{ @$cs->id }}" {{ @$data->id == $cs->id ? 'selected' : '' }}>{{ @$cs->subject->code . ' - ' . @$cs->subject->description . ' (Class : ' . $cs->class->code . ' - ' . @$cs->class->semester->name . ' - ' . @$cs->class->year_level->name . ')' }}</option>
                                 @endforeach
                             </select>
                         </div>

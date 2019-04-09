@@ -21,6 +21,8 @@ class RedirectIfAuthenticated
             $user = Auth::user();
             if ($user->type == 'admin') {
                 return redirect()->route('UsersManagement');
+            } else if ($user->type == 'teacher') {
+                return redirect()->route('GradesManagement');
             } else {
                 return redirect()->route('User');
             }
