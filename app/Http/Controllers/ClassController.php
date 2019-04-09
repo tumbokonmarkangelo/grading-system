@@ -9,6 +9,9 @@ use App\Subject;
 use App\User;
 use App\ClassesSubject;
 use App\ClassesStudent;
+use App\Semester;
+use App\YearLevel;
+use App\Computation;
 use Validator;
 
 class ClassController extends Controller
@@ -22,9 +25,13 @@ class ClassController extends Controller
 
     public function create(Request $request)
     {
-        
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
+
         return view('admin.classes.create')
-            ->with('page_name', 'Create Class');
+            ->with('page_name', 'Create Class')
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels);
     }
 
     public function store(Request $request)
@@ -56,11 +63,15 @@ class ClassController extends Controller
     public function edit($id)
     {
         $data = Classes::find($id);
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
         
         return view('admin.classes.edit')
             ->with('page_name', 'Edit Class')
             ->with('page_description', '(id:'.$data->id.')')
-            ->with('data', $data);
+            ->with('data', $data)
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels);
     }
 
     public function update(Request $request, $id)
@@ -127,27 +138,29 @@ class ClassController extends Controller
     {
         $input = $request->all();
 
-        $subjects;
-        foreach ($input['id'] as $key => $subject_id) {
-            foreach ($input as $key_name => $value) {
-                if (!empty($value[$key])) {
-                    $subjects[$key][$key_name] = $value[$key];
+        if (!empty($input['id'])) {
+            $subjects;
+            foreach ($input['id'] as $key => $subject_id) {
+                foreach ($input as $key_name => $value) {
+                    if (!empty($value[$key])) {
+                        $subjects[$key][$key_name] = $value[$key];
+                    }
                 }
             }
-        }
-        
-        foreach ($subjects as $key => $subject) {
-            if (empty($validator) || !$validator->fails()) {
-                if (!empty($subject['action']) && $subject['action'] == 'delete') {
-                    $validator = Validator::make($subject, [
-                        'id' => 'required|integer',
-                    ]);
-                } else {
-                    $validator = Validator::make($subject, [
-                        'class_id' => 'required|integer',
-                        'subject_id' => 'required|integer',
-                        'teacher_id' => 'required|integer',
-                    ]);
+            
+            foreach ($subjects as $key => $subject) {
+                if (empty($validator) || !$validator->fails()) {
+                    if (!empty($subject['action']) && $subject['action'] == 'delete') {
+                        $validator = Validator::make($subject, [
+                            'id' => 'required|integer',
+                        ]);
+                    } else {
+                        $validator = Validator::make($subject, [
+                            'class_id' => 'required|integer',
+                            'subject_id' => 'required|integer',
+                            'teacher_id' => 'required|integer',
+                        ]);
+                    }
                 }
             }
         }
@@ -162,7 +175,7 @@ class ClassController extends Controller
                     $data = ClassesSubject::create($subject);
                 } else if ($subject['action'] == 'edit') {
                     $data = ClassesSubject::find($subject['id']);
-                    $data->update($input);
+                    $data->update($subject);
                 } else if ($subject['action'] == 'delete') {
                     ClassesSubject::destroy($input['id']);
                 }
@@ -194,26 +207,28 @@ class ClassController extends Controller
     {
         $input = $request->all();
 
-        $subjects;
-        foreach ($input['id'] as $key => $subject_id) {
-            foreach ($input as $key_name => $value) {
-                if (!empty($value[$key])) {
-                    $subjects[$key][$key_name] = $value[$key];
+        if (!empty($input['id'])) {
+            $students;
+            foreach ($input['id'] as $key => $student_id) {
+                foreach ($input as $key_name => $value) {
+                    if (!empty($value[$key])) {
+                        $students[$key][$key_name] = $value[$key];
+                    }
                 }
             }
-        }
-        
-        foreach ($subjects as $key => $subject) {
-            if (empty($validator) || !$validator->fails()) {
-                if (!empty($subject['action']) && $subject['action'] == 'delete') {
-                    $validator = Validator::make($subject, [
-                        'id' => 'required|integer',
-                    ]);
-                } else {
-                    $validator = Validator::make($subject, [
-                        'class_id' => 'required|integer',
-                        'student_id' => 'required|integer',
-                    ]);
+            
+            foreach ($students as $key => $student) {
+                if (empty($validator) || !$validator->fails()) {
+                    if (!empty($student['action']) && $student['action'] == 'delete') {
+                        $validator = Validator::make($student, [
+                            'id' => 'required|integer',
+                        ]);
+                    } else {
+                        $validator = Validator::make($student, [
+                            'class_id' => 'required|integer',
+                            'student_id' => 'required|integer',
+                        ]);
+                    }
                 }
             }
         }
@@ -223,19 +238,86 @@ class ClassController extends Controller
             $response['message'] = ['Check required fields.'];
             $status = 422;
         } else {
-            foreach ($subjects as $key => $subject) {
-                if (empty($subject['action'])) {
-                    $data = ClassesStudent::create($subject);
-                } else if ($subject['action'] == 'edit') {
-                    $data = ClassesStudent::find($subject['id']);
-                    $data->update($input);
-                } else if ($subject['action'] == 'delete') {
+            foreach ($students as $key => $student) {
+                if (empty($student['action'])) {
+                    $data = ClassesStudent::create($student);
+                } else if ($student['action'] == 'edit') {
+                    $data = ClassesStudent::find($student['id']);
+                    $data->update($student);
+                } else if ($student['action'] == 'delete') {
                     ClassesStudent::destroy($input['id']);
                 }
             }
             
             $response['notifMessage'] = 'Update request saved.';
             $response['redirect'] = route('ManageClassStudent', [$id]);
+            $status = 201;
+        }
+
+        return response($response, $status);
+    }
+
+    public function manage_subject_computaion(Request $request, $id)
+    {
+        $data = ClassesSubject::find($id);
+        
+        return view('admin.classes.manage.computation')
+            ->with('page_name', 'Edit Subject Computation')
+            ->with('page_description', '(Class code: '.$data->subject->code.' - '.$data->subject->description.')')
+            ->with('data', $data)
+            ->with('json_data', json_encode($data));
+    }
+
+    public function update_subject_computaion(Request $request, $id)
+    {
+        $input = $request->all();
+
+        if (!empty($input['id'])) {
+            $items;
+            foreach ($input['id'] as $key => $item_id) {
+                foreach ($input as $key_name => $value) {
+                    if (!empty($value[$key])) {
+                        $items[$key][$key_name] = $value[$key];
+                    }
+                }
+            }
+            
+            foreach ($items as $key => $item) {
+                if (empty($validator) || !$validator->fails()) {
+                    if (!empty($item['action']) && $item['action'] == 'delete') {
+                        $validator = Validator::make($item, [
+                            'id' => 'required|integer',
+                        ]);
+                    } else {
+                        $validator = Validator::make($item, [
+                            'classes_subject_id' => 'required|integer',
+                            'name' => 'required|max:191',
+                            'description' => 'max:191',
+                            'value' => 'required|integer',
+                        ]);
+                    }
+                }
+            }
+        }
+
+        if (empty($validator) || $validator->fails()) {
+            $response['notifMessage'] = 'Failed request.';
+            $response['message'] = ['Check required fields.'];
+            $status = 422;
+        } else {
+            foreach ($items as $key => $item) {
+                if (empty($item['action'])) {
+                    $data = Computation::create($item);
+                } else if ($item['action'] == 'edit') {
+                    $data = Computation::find($item['id']);
+                    $data->update($item);
+                } else if ($item['action'] == 'delete') {
+                    Computation::destroy($input['id']);
+                }
+            }
+            
+            $response['notifMessage'] = 'Update request saved.';
+            $response['redirect'] = route('ManageClassSubjectComputaion', [$id]);
             $status = 201;
         }
 

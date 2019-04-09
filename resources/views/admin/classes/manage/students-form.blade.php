@@ -50,11 +50,12 @@
 <div class="form-group">
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('ClassesManagement') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('EditClass', [$data->id]) }}" class="btn btn-secondary">Back</a>
             <button class="btn btn-info" type="submit">Save</button>
         </div>
     </div>
 </div>
+
 <div class="row-template-container">
     <div class="row mt-2 action-coverage template">
         <div class="col-md-1">

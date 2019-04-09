@@ -45,7 +45,7 @@
                 <button class="btn btn-success btn-sm" type="button" value="edit"><span class="default-view">Edit</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Edit</span></button>
                 <button class="btn btn-danger btn-sm" type="button" value="delete"><span class="default-view">Delete</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Delete</span></button>
                 <input type="hidden" name="action[]" class="action-input readonly-input" disabled>
-                <a href="#" class="btn btn-info btn-sm">Computation</a>
+                <a href="{{ route('ManageClassSubjectComputaion', [$cs->id]) }}" class="btn btn-info btn-sm">Computation</a>
             </div>
         </div>
         @endforeach
@@ -60,11 +60,12 @@
 <div class="form-group">
     <div class="row">
         <div class="col-md-12 text-right">
-            <a href="{{ route('ClassesManagement') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('EditClass', [$data->id]) }}" class="btn btn-secondary">Back</a>
             <button class="btn btn-info" type="submit">Save</button>
         </div>
     </div>
 </div>
+
 <div class="row-template-container">
     <div class="row mt-2 action-coverage template">
         <div class="col-md-1">
@@ -99,7 +100,7 @@
 @section('added-scripts')
 <script>
     $(document).ready(function() {
-        
+
     });
 </script>
 @stop

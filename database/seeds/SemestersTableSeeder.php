@@ -12,15 +12,15 @@ class SemestersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('semester')->insert([
+        DB::table('semesters')->insert([
             'name' => 'First Semester',
             'code' => '1',
         ]);
-        DB::table('semester')->insert([
+        DB::table('semesters')->insert([
             'name' => 'Second Semester',
             'code' => '2',
         ]);
-        DB::table('semester')->insert([
+        DB::table('semesters')->insert([
             'name' => 'Third Semester',
             'code' => '3',
         ]);

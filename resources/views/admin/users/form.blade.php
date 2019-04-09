@@ -19,7 +19,7 @@
             <input type="email" name="email" placeholder="Email" class="form-control">
         </div>
         <div class="col-md-4">
-            <input type="password" name="password" placeholder="Password" class="form-control" required>
+            <input type="password" name="password" placeholder="Password" class="form-control">
         </div>
     </div>
 </div>

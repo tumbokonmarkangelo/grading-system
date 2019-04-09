@@ -21,11 +21,6 @@ class ClassesSubject extends Model
     protected $casts = [
         'deleted_at' => 'string',
     ];
-
-    protected $appends = [
-        'subject',
-        'teacher',
-    ];
     
     public function subject()
 	{
@@ -35,5 +30,15 @@ class ClassesSubject extends Model
     public function teacher()
 	{
 		return $this->hasOne('App\User', 'id', 'teacher_id');
+	}
+
+    public function computations()
+    {
+        return $this->hasMany('App\Computation', 'classes_subject_id');
+    }
+    
+    public function class()
+	{
+		return $this->hasOne('App\Classes', 'id', 'class_id');
 	}
 }

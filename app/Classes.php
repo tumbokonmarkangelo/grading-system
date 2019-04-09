@@ -14,7 +14,8 @@ class Classes extends Model
     protected $fillable = [
         'code',
         'semester_id',
-        'year_id'
+        'year_id',
+        'status'
     ];
 
     protected $casts = [
@@ -30,4 +31,14 @@ class Classes extends Model
     {
         return $this->hasMany('App\ClassesStudent', 'class_id');
     }
+    
+    public function semester()
+	{
+		return $this->hasOne('App\Semester', 'id', 'semester_id');
+	}
+    
+    public function year_level()
+	{
+		return $this->hasOne('App\YearLevel', 'id', 'year_id');
+	}
 }

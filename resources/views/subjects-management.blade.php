@@ -41,6 +41,8 @@
             </tbody>
         </table>
     </div>
+    @else
+    <h5 class="mt-3"><i class="fas fa-info-circle fa-sm"></i> No Subjects yet.</h5>
     @endif
 </div>
 @stop

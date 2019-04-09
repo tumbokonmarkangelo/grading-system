@@ -6,9 +6,7 @@
         var data = JSON.parse('{!! !empty($json_data) ? $json_data : json_encode($data) !!}');
         Object.keys(data).forEach(function(key) {
             if (data[key]) {
-                var input = $('form.need-help input[name='+key+']');
-                if (!input.length) input = $('form.need-help select[name='+key+']');
-                if (!input.length) input = $('form.need-help textarea[name='+key+']');
+                var input = $('form.need-help :input[name='+key+']:not(:button)');
                 if (input.length) input.val(data[key]);
             }
         });
@@ -32,34 +30,16 @@
                 input.val('').prop('disabled', false);
             }
             
-            coverage.find('input').each(function () {
+            coverage.find(':input:not(:button)').each(function () {
                 var input = $(this);
                 var isInputReadonly = input.hasClass('readonly-input');
-                console.log(value);
-                console.log(isInputReadonly);
-                console.log(isCancel);
-                if (value == 'edit' && !isInputReadonly && !isCancel || value == 'delete' &&  isInputReadonly && !isCancel) {
+                if (value == 'edit' && !isCancel || value == 'delete' &&  isInputReadonly && !isCancel) {
                     input.prop('disabled', false);
                 } else {
                     input.prop('disabled', true);
                 }
-            });
-            coverage.find('select').each(function () {
-                var input = $(this);
-                var isInputReadonly = input.hasClass('readonly-input');
-                if (value == 'edit' && !isInputReadonly && !isCancel || value == 'delete' &&  isInputReadonly && !isCancel) {
-                    input.prop('disabled', false);
-                } else {
-                    input.prop('disabled', true);
-                }
-            });
-            coverage.find('textarea').each(function () {
-                var input = $(this);
-                var isInputReadonly = input.hasClass('readonly-input');
-                if (value == 'edit' && !isInputReadonly && !isCancel || value == 'delete' &&  isInputReadonly && !isCancel) {
-                    input.prop('disabled', false);
-                } else {
-                    input.prop('disabled', true);
+                if (isCancel && typeof input.attr('default-value') !== typeof undefined) {
+                    input.val(input.attr('default-value'));
                 }
             });
 
@@ -79,17 +59,41 @@
                     button.closest('.action-coverage').remove();
                 }
             });
-            template.find('input').each(function () {
-                $(this).prop('disabled', false);
-            });
-            template.find('select').each(function () {
-                $(this).prop('disabled', false);
-            });
-            template.find('textarea').each(function () {
+            template.find(':input:not(:button)').each(function () {
                 $(this).prop('disabled', false);
             });
             $('.template-destination').append(template);
             template.find('.select2-on-template').select2();
+            template.find('input[type=number]').on('change', function () {
+                var input = $(this);
+                var isDecimal = input.hasClass('decimal-input');
+                var value = isDecimal ? parseFloat(input.val()).toFixed(2) : parseInt(input.val());
+                var min = parseInt(input.attr('min'));
+                var max = parseInt(input.attr('max'));
+                
+                if (value < min) {
+                    input.val(min);
+                } else if (value > max) {
+                    input.val(max);
+                } else {
+                    input.val(value);
+                }
+            });
+        });
+        $('input[type=number]').on('change', function () {
+            var input = $(this);
+            var isDecimal = input.hasClass('decimal-input');
+            var value = isDecimal ? parseFloat(input.val()).toFixed(2) : parseInt(input.val());
+            var min = parseInt(input.attr('min'));
+            var max = parseInt(input.attr('max'));
+            
+            if (value < min) {
+                input.val(min);
+            } else if (value > max) {
+                input.val(max);
+            } else {
+                input.val(value);
+            }
         });
     });
 </script>

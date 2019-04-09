@@ -149,6 +149,15 @@ body.loading > .loading-overlay {
   resize: none;
 }
 
+.form-group .form-control {
+  color: #1b1b1b;
+}
+
+.form-group .form-control:disabled,
+.form-group .form-control [readonly] {
+  color: #444444;
+}
+
 .table-container-listing {
   padding: 20px 0;
 }
