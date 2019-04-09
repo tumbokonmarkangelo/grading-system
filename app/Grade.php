@@ -5,24 +5,22 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;  
 
-class ClassesStudent extends Model
+class Grade extends Model
 {
     use SoftDeletes;
     
     protected $fillable = [
-        'class_id',
+        'classes_subject_id',
         'student_id',
-        'code',
-        'semester_id',
-        'year_id'
+        'computed_grade'
     ];
 
     protected $casts = [
         'deleted_at' => 'string',
     ];
-    
-    public function student()
-	{
-		return $this->hasOne('App\User', 'id', 'student_id');
-	}
+
+    public function items()
+    {
+        return $this->hasMany('App\GradesItem', 'grade_id');
+    }
 }

@@ -33,14 +33,14 @@
             </a>
 
             <!-- Divider -->
-            <hr class="sidebar-divider my-0">
+            <!-- <hr class="sidebar-divider my-0"> -->
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{{ route('User', ['type' => $user->type]) }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
-            </li>
+            </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -88,6 +88,20 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Module:</h6>
                         <a class="collapse-item" href="{{ route('ClassesManagement') }}">Manage</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGrades" aria-expanded="true" aria-controls="collapseGrades">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Grades</span>
+                </a>
+                <div id="collapseGrades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Module:</h6>
+                        <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
                     </div>
                 </div>
             </li>
@@ -201,10 +215,16 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    @if (!empty($page_name))
-                        <!-- Page Heading -->
-                        <h1 class="h3 mb-4 text-gray-800">{{ $page_name }}</h1>
-                    @endif
+                    <div class="page-header-container mb-4"> 
+                        @if (!empty($page_name))
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-0 text-gray-800">{{ $page_name }}</h1>
+                        @endif
+                        @if (!empty($page_description))
+                            <!-- Page Heading -->
+                            <p class="mb-0">{{ $page_description }}</p>
+                        @endif
+                    </div>
                     <div class="content-container">
                         @yield('content')
                     </div>
@@ -262,6 +282,7 @@
         console.log('{{ Session::get('message') }}');
     </script>
   @endif
+  @yield('form-helper-scripts')
   @yield('added-scripts')
 </body>
 </html>

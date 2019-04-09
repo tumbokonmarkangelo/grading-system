@@ -3,7 +3,6 @@ $(document).ready(function() {
         $('body').removeClass('loading'); // remove loader overlay when page is ready with 1 sec delay
     }, 1000);
     $('form.ajax-submit').on('submit', function (e) {
-        console.log('asd');
         e.preventDefault();
         var form = $(this);
         var method = $(this).attr('method');
@@ -12,6 +11,30 @@ $(document).ready(function() {
         var confirmation = $(this).attr('confirmation');
         var confirmation_note = $(this).attr('confirmation-note');
         var confirmation_cancelled_note = $(this).attr('confirmation-cancelled-note');
+
+        var isComputation = form.hasClass('form-computation');
+
+        if (isComputation) {
+            var total = 0;
+            form.find('input[name="value[]"]').each(function () {
+                var input = $(this);
+                var value = input.val();
+                var action = input.closest('.action-coverage').find('input.action-input').val();
+                if (value.length && action != 'delete') {
+                    total += parseInt(value);
+                }
+            });
+
+            if (total != 100) {
+                swal({
+                    title: "Please check criteria values",
+                    text:  "Total of all values must be exactly 100.",
+                    icon: "warning",
+                    dangerMode: true,
+                })
+                return false;
+            }
+        }
         
         if (confirmation) {
             swal({
