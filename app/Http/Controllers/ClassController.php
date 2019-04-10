@@ -182,7 +182,7 @@ class ClassController extends Controller
                     $data = ClassesSubject::find($subject['id']);
                     $data->update($subject);
                 } else if ($subject['action'] == 'delete') {
-                    ClassesSubject::destroy($input['id']);
+                    ClassesSubject::destroy($subject['id']);
                 }
             }
             
@@ -250,7 +250,7 @@ class ClassController extends Controller
                     $data = ClassesStudent::find($student['id']);
                     $data->update($student);
                 } else if ($student['action'] == 'delete') {
-                    ClassesStudent::destroy($input['id']);
+                    ClassesStudent::destroy($student['id']);
                 }
             }
             
@@ -265,19 +265,22 @@ class ClassController extends Controller
     public function manage_subject_computaion(Request $request, $id)
     {
         $data = ClassesSubject::find($id);
+        $period = !empty($request['period']) ? $request['period'] : 'prelim';
         $grade_count = Grade::where('classes_subject_id', $id)->count();
         
         return view('admin.classes.manage.computation')
             ->with('page_name', 'Edit Subject Computation')
-            ->with('page_description', '(Class code: '.$data->subject->code.' - '.$data->subject->description.')')
+            ->with('page_description', '(Class code: '.$data->subject->code.' - '.$data->subject->description. (!empty($period) ? ' - ' . ucfirst($period) . ' period' : '').')')
             ->with('data', $data)
             ->with('json_data', json_encode($data))
+            ->with('period', $period)
             ->with('grade_count', $grade_count);
     }
 
     public function update_subject_computaion(Request $request, $id)
     {
         $input = $request->all();
+        $period = !empty($request['period']) ? $request['period'] : 'prelim';
 
         if (!empty($input['id'])) {
             $items;
@@ -319,7 +322,7 @@ class ClassController extends Controller
                     $data = Computation::find($item['id']);
                     $data->update($item);
                 } else if ($item['action'] == 'delete') {
-                    Computation::destroy($input['id']);
+                    Computation::destroy($item['id']);
                 }
             }
             

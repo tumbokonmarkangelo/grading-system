@@ -10,6 +10,7 @@ class Computation extends Model
         'classes_subject_id',
         'name',
         'description',
-        'value'
+        'value',
+        'period'
     ];
 }

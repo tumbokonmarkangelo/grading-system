@@ -33,6 +33,7 @@ class GradeController extends Controller
             ->with('page_name', 'Manage Grades')
             ->with('data', @$data)
             ->with('students', @$students)
+            ->with('period', @$input['period'])
             ->with('subjects', $subjects);
     }
 

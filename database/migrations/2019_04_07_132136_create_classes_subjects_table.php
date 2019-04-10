@@ -18,6 +18,9 @@ class CreateClassesSubjectsTable extends Migration
             $table->integer('class_id');
             $table->integer('subject_id');
             $table->integer('teacher_id');
+            $table->integer('prelim');
+            $table->integer('midterm');
+            $table->integer('final');
             $table->string('code')->nullable();
             $table->integer('semester_id')->nullable();
             $table->integer('year_id')->nullable();

@@ -18,6 +18,7 @@ class CreateGradesTable extends Migration
             $table->integer('classes_subject_id');
             $table->integer('student_id');
             $table->double('computed_grade', 8, 2);
+            $table->enum('period', ['prelim', 'midterm', 'final']);
             $table->timestamps();
             $table->softDeletes();
         });
