@@ -4,11 +4,14 @@
         <div class="col-md-1">
             <label>ID</label>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label>Subject</label>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label>Teacher</label>
+        </div>
+        <div class="col-md-3">
+            <label>Period Value (%)</label>
         </div>
         <div class="col-md-3 text-center">
             <label>Action</label>
@@ -21,7 +24,7 @@
                 <input type="text" name="id[]" placeholder="Auto Generate" class="form-control readonly-input" value="{{ $cs->id }}" required readonly disabled>
                 <input type="hidden" name="class_id[]" value="{{ $data->id }}" disabled>
             </div>
-            <div class="col-md-4 select2-container">
+            <div class="col-md-3 select2-container">
                 <select type="text" name="subject_id[]" placeholder="Select Subject" class="form-control select2" required disabled>
                     <option value="">Select Subject</option>
                     @if ($subjects->count())
@@ -31,7 +34,7 @@
                     @endif
                 </select>
             </div>
-            <div class="col-md-4 select2-container">
+            <div class="col-md-2 select2-container">
                 <select type="text" name="teacher_id[]" placeholder="Select Teacher" class="form-control select2" required disabled>
                     <option value="">Select Teacher</option>
                     @if ($teachers->count())
@@ -40,6 +43,11 @@
                         @endforeach
                     @endif
                 </select>
+            </div>
+            <div class="col-md-3 three-inputs-container">
+                <input id="value" min="1" max="100" type="number" name="prelim[]" placeholder="Prelim" class="form-control" default-value="{{ $cs->prelim }}" value="{{ $cs->prelim }}" required disabled>
+                <input id="value" min="1" max="100" type="number" name="midterm[]" placeholder="Midterm" class="form-control" default-value="{{ $cs->midterm }}" value="{{ $cs->midterm }}" required disabled>
+                <input id="value" min="1" max="100" type="number" name="final[]" placeholder="Final" class="form-control" default-value="{{ $cs->final }}" value="{{ $cs->final }}" required disabled>
             </div>
             <div class="col-md-3 text-center action-container">
                 @if (!empty($user = Auth::user()) && $user->type == 'admin')
@@ -78,7 +86,7 @@
             <input type="text" name="id[]" placeholder="" class="form-control readonly-input" required readonly disabled>
             <input type="hidden" name="class_id[]" value="{{ $data->id }}" disabled>
         </div>
-        <div class="col-md-4 select2-container">
+        <div class="col-md-3 select2-container">
             <select type="text" name="subject_id[]" placeholder="Select Subject" class="form-control select2-on-template" required disabled>
                 <option value="">Select Subject</option>
                 @if ($subjects->count())
@@ -88,7 +96,7 @@
                 @endif
             </select>
         </div>
-        <div class="col-md-4 select2-container">
+        <div class="col-md-2 select2-container">
             <select type="text" name="teacher_id[]" placeholder="Select Teacher" class="form-control select2-on-template" required disabled>
                 <option value="">Select Teacher</option>
                 @if ($teachers->count())
@@ -97,6 +105,11 @@
                     @endforeach
                 @endif
             </select>
+        </div>
+        <div class="col-md-3 three-inputs-container">
+            <input id="value" min="1" max="100" type="number" name="prelim[]" placeholder="Prelim" class="form-control" required disabled>
+            <input id="value" min="1" max="100" type="number" name="midterm[]" placeholder="Midterm" class="form-control" required disabled>
+            <input id="value" min="1" max="100" type="number" name="final[]" placeholder="Final" class="form-control" required disabled>
         </div>
         <div class="col-md-3 text-center action-container">
             <button class="btn btn-danger btn-sm" type="button" value="remove">Remove</button>

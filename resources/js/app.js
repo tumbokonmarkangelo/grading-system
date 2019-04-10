@@ -35,6 +35,28 @@ $(document).ready(function() {
                 return false;
             }
         }
+
+        var threeInputs = form.find('.three-inputs-container')
+        if (threeInputs.length) {
+            var total = 0;
+            threeInputs.find(':input').each(function () {
+                var input = $(this);
+                var value = input.val();
+                if (value.length) {
+                    total += parseInt(value);
+                }
+            });
+
+            if (total != 100) {
+                swal({
+                    title: "Please check subject period values",
+                    text:  "Total of all values must be exactly 100.",
+                    icon: "warning",
+                    dangerMode: true,
+                })
+                return false;
+            }
+        }
         
         if (confirmation) {
             swal({
