@@ -5,6 +5,26 @@
             <label for="code">Subject code</label>
             <input id="code" type="text" name="code" placeholder="Subject code" class="form-control" required>
         </div>
+        <div class="col-md-2">
+            <label for="units">Units</label>
+            <input min="1" max="10" id="units" type="number" name="units" placeholder="Units" class="form-control" required>
+        </div>
+        <!-- <div class="col-md-3">
+            <label for="semester_id">Semester</label>
+            <select id="semester_id" name="semester_id" class="form-control" required>
+                @foreach ($semesters as $key => $semester)
+                    <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="year_id">Year Level</label>
+            <select id="year_id" name="year_id" class="form-control" required>
+                @foreach ($year_levels as $key => $year_level)
+                    <option value="{{ $year_level->id }}">{{ $year_level->name }}</option>
+                @endforeach
+            </select>
+        </div> -->
     </div>
 </div>
 <div class="form-group">

@@ -36,26 +36,33 @@ $(document).ready(function() {
             }
         }
 
-        var threeInputs = form.find('.three-inputs-container')
-        if (threeInputs.length) {
-            var total = 0;
-            threeInputs.find(':input').each(function () {
-                var input = $(this);
-                var value = input.val();
-                if (value.length) {
-                    total += parseInt(value);
+        var invalidRequest = false;
+        form.find('.three-inputs-container').each(function () {
+            var threeInputs = $(this);
+            if (threeInputs.find(':input').length && !threeInputs.closest('.row-template-container').length) {
+                var total = 0;
+                threeInputs.find(':input').each(function () {
+                    var input = $(this);
+                    var value = input.val();
+                    if (value.length) {
+                        total += parseInt(value);
+                    }
+                });
+                
+                if (total != 100) {
+                    invalidRequest = true;
                 }
-            });
+            }  
+        });
 
-            if (total != 100) {
-                swal({
-                    title: "Please check subject period values",
-                    text:  "Total of all values must be exactly 100.",
-                    icon: "warning",
-                    dangerMode: true,
-                })
-                return false;
-            }
+        if (invalidRequest) {
+            swal({
+                title: "Please check subject period values",
+                text:  "Total of all values must be exactly 100.",
+                icon: "warning",
+                dangerMode: true,
+            })
+            return false;
         }
         
         if (confirmation) {

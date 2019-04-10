@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Subject;
+use App\Semester;
+use App\YearLevel;
 use Validator;
 
 class SubjectController extends Controller
@@ -18,9 +20,13 @@ class SubjectController extends Controller
 
     public function create(Request $request)
     {
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
         
         return view('admin.subjects.create')
-            ->with('page_name', 'Create Subject');
+            ->with('page_name', 'Create Subject')
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels);
     }
 
     public function store(Request $request)
@@ -53,11 +59,15 @@ class SubjectController extends Controller
     public function edit($id)
     {
         $data = Subject::find($id);
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
         
         return view('admin.subjects.edit')
             ->with('page_name', 'Edit Subject')
             ->with('page_description', $data->updated_at ? '(last update: '.$data->updated_at->diffForHumans().')' : '')
-            ->with('data', $data);
+            ->with('data', $data)
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels);
     }
 
     public function update(Request $request, $id)

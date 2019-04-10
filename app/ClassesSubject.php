@@ -44,4 +44,9 @@ class ClassesSubject extends Model
 	{
 		return $this->hasOne('App\Classes', 'id', 'class_id');
 	}
+
+    public function grades()
+    {
+        return $this->hasMany('App\Grade', 'classes_subject_id');
+    }
 }

@@ -17,6 +17,7 @@ class CreateSubjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('code');
             $table->string('description');
+            $table->integer('units')->default(0);
             $table->integer('semester_id')->nullable();
             $table->integer('year_id')->nullable();
             $table->timestamps();

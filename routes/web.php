@@ -53,3 +53,4 @@ Route::patch('/class/update/{id}/student', array('as'=>'UpdateClassStudent','use
 
 // grades management routes
 Route::post('/grades/assign/{id}', array('as'=>'AssignGrades','uses'=>'GradeController@assign'))->middleware('auth');
+Route::get('/grades/view', array('as'=>'ViewGrade','uses'=>'GradeController@view'))->middleware('auth');
