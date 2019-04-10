@@ -19,12 +19,15 @@
         </div>
         @endif
     </div>
-    @if ($data->computations->count())
-        @foreach ($data->computations as $key => $computation)
+    <?php $counter = 0 ?>
+    @if ($data->computations->where('period' , !empty($period) ? $period : 'prelim')->count())
+        @foreach ($data->computations->where('period' , !empty($period) ? $period : 'prelim') as $key => $computation)
+            <?php $counter += $computation->value ?>
         <div class="row mt-2 action-coverage">
             <div class="col-md-1">
                 <input type="text" name="id[]" placeholder="Auto Generate" class="form-control readonly-input" value="{{ $computation->id }}" required readonly disabled>
                 <input type="hidden" name="classes_subject_id[]" value="{{ $data->id }}" disabled>
+                <input type="hidden" name="period[]" value="{{ !empty($period) ? $period : 'prelim' }}" disabled>
             </div>
             <div class="col-md-3">
                 <input id="name" type="text" name="name[]" placeholder="Criteria Name" class="form-control" value="{{ $computation->name }}" required disabled>
@@ -48,6 +51,11 @@
 </div>
 @if ($grade_count == 0)
 <div class="row">
+    <div class="offset-md-7 col-md-2">
+        <label>Total Value: <span class="total-value-container">{{ $counter }}</span></label>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12 text-center">
         <button type="button" class="btn btn-success add-row"><i class="fas fa-plus"></i> Add new Criteria</button>
     </div>
@@ -70,6 +78,7 @@
         <div class="col-md-1">
             <input type="text" name="id[]" placeholder="" class="form-control readonly-input" required readonly disabled>
             <input type="hidden" name="classes_subject_id[]" value="{{ $data->id }}" disabled>
+            <input type="hidden" name="period[]" value="{{ !empty($period) ? $period : 'prelim' }}" disabled>
         </div>
         <div class="col-md-3">
             <input id="name" type="text" name="name[]" placeholder="Criteria Name" class="form-control" required disabled>
@@ -96,6 +105,23 @@
                 dangerMode: true,
             })
         @endif
+        
+        function checkValues () {
+            var total = 0;
+            $('.form-computation').find('input[name="value[]"]').each(function () {
+                var input = $(this);
+                var value = input.val();
+                var action = input.closest('.action-coverage').find('input.action-input').val();
+                if (value.length && action != 'delete') {
+                    total += parseInt(value);
+                }
+            });
+            $('.total-value-container').html(total);
+        }
+
+        $('.form-computation').find('input[name="value[]"]').on('change', function () {
+            checkValues();
+        });
     });
 </script>
 @stop

@@ -47,7 +47,7 @@
                 <button class="btn btn-danger btn-sm" type="button" value="delete"><span class="default-view">Delete</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Delete</span></button>
                 <input type="hidden" name="action[]" class="action-input readonly-input" disabled>
                 @endif
-                <a href="{{ route('ManageClassSubjectComputaion', [$cs->id]) }}" class="btn btn-info btn-sm">Computation</a>
+                <a href="{{ route('ManageClassSubjectComputaion', [$cs->id, 'period' => 'prelim']) }}" class="btn btn-info btn-sm">Computation</a>
             </div>
         </div>
         @endforeach
