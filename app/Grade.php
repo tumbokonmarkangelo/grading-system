@@ -12,7 +12,8 @@ class Grade extends Model
     protected $fillable = [
         'classes_subject_id',
         'student_id',
-        'computed_grade'
+        'computed_grade',
+        'period'
     ];
 
     protected $casts = [

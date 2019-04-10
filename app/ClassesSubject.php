@@ -15,7 +15,10 @@ class ClassesSubject extends Model
         'teacher_id',
         'code',
         'semester_id',
-        'year_id'
+        'year_id',
+        'prelim',
+        'midterm',
+        'final'
     ];
 
     protected $casts = [

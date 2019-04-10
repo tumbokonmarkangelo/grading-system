@@ -208,3 +208,12 @@ input.readonly-input {
     width: 100% !important;
   }
 }
+
+.three-inputs-container {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 3px;
+  input {
+    padding: 5px 3px;
+  }
+}

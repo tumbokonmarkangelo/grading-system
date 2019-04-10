@@ -19,6 +19,7 @@ class CreateComputationsTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('value');
+            $table->enum('period', ['prelim', 'midterm', 'final']);
             $table->timestamps();
         });
     }

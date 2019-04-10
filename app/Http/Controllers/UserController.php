@@ -72,11 +72,13 @@ class UserController extends Controller
 
         if (empty($input['email'])) unset($input['email']);
 
+        $user = User::find($id);
+
         $validator = Validator::make($input, [
             'first_name' => 'required|max:191',
             'middle_name' => 'max:191',
             'last_name' => 'required|max:191',
-            'email' => 'unique:users|max:191',
+            'email' => $user->email == $input['email'] ? '' : 'unique:users|' .'max:191',
             // 'username' => 'required|unique:users|max:191',
             'password' => 'max:191',
             'type' => 'required|in:admin,teacher,student',
@@ -87,7 +89,6 @@ class UserController extends Controller
             $response['message'] = $validator->errors()->all();
             $status = 422;
         } else {
-            $user = User::find($id);
             $user->first_name = $input['first_name'];
             $user->middle_name = $input['middle_name'];
             $user->last_name = $input['last_name'];
