@@ -13,7 +13,8 @@ class Grade extends Model
         'classes_subject_id',
         'student_id',
         'computed_grade',
-        'period'
+        'period',
+        'scale'
     ];
 
     protected $casts = [
@@ -24,4 +25,14 @@ class Grade extends Model
     {
         return $this->hasMany('App\GradesItem', 'grade_id');
     }
+    
+    public function classes_subject()
+	{
+		return $this->hasOne('App\ClassesSubject', 'id', 'classes_subject_id');
+	}
+    
+    public function student()
+	{
+		return $this->hasOne('App\User', 'id', 'student_id');
+	}
 }

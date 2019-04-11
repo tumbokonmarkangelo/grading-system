@@ -122,6 +122,9 @@ class ClassController extends Controller
     public function manage_subject($id)
     {
         $data = Classes::find($id);
+        if (!empty($user = Auth::user()) && $user->type == 'teacher') { 
+            $data->subjects = $data->subjects->where('teacher_id', $user->id);
+        }
         $subjects = Subject::orderBy('code', 'asc')->get();
         $teachers = User::where('type', 'teacher')->orderBy('first_name', 'asc')->get();
         
@@ -304,6 +307,7 @@ class ClassController extends Controller
                             'name' => 'required|max:191',
                             'description' => 'max:191',
                             'value' => 'required|integer',
+                            'period' => 'required|in:prelim,midterm,final',
                         ]);
                     }
                 }

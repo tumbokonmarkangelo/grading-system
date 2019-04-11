@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Classes;
 use App\ClassesSubject;
 use App\Computation;
+use App\Semester;
+use App\YearLevel;
 use App\Grade;
 use Validator;
 
@@ -60,6 +63,7 @@ class GradeController extends Controller
             'classes_subject_id' => 'required|integer',
             'student_id' => 'required|integer',
             'computed_grade' => 'required|numeric',
+            'period' => 'required|in:prelim,midterm,final',
         ]);
 
         if ($validator->fails()) {
@@ -67,7 +71,7 @@ class GradeController extends Controller
             $response['message'] = $validator->errors()->all();
             $status = 422;
         } else {
-            $data = Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->first();
+            $data = Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->where('period', $input['period'])->first();
             if ($data) {
                 $data->update($input);
                 $data->items()->delete();
@@ -85,5 +89,51 @@ class GradeController extends Controller
         }
 
         return response($response, $status);
+    }
+    
+    public function view(Request $request)
+    {
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
+
+        $user = Auth::user();
+        $input = $request->all();
+        $classes = new Classes;
+        if ($user->type == 'student') {
+            $classes = $classes->whereHas('students', function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+            });
+            $grades = Grade::where('student_id', $user->id)->get();
+        } else if ($user->type == 'teacher') {
+            $classes = $classes->whereHas('subjects', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            });
+        }
+        $classes = $classes->get();
+
+        $data = $classes[0];
+        if (!empty($input['class_id'])) {
+            $data = $data->find($input['class_id']);
+        }
+
+        if ($user->type == 'teacher') {
+            $data->subjects = $data->subjects->where('teacher_id', $user->id);
+        }
+
+        $subject = @$data->subjects[0];
+        if (!empty($input['classes_subject_id'])) {
+            $subject = $data->subjects->find($input['classes_subject_id']);
+        }
+        
+        return view('admin.grades.view')
+            ->with('page_name', 'View Grades')
+            ->with('grades', @$grades)
+            ->with('data', @$data)
+            ->with('subject', @$subject)
+            ->with('classes', @$classes)
+            ->with('class_id', @$input['class_id'])
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels)
+            ->with('user', $user);
     }
 }
