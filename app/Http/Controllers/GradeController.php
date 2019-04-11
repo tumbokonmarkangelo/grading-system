@@ -10,6 +10,7 @@ use App\Computation;
 use App\Semester;
 use App\YearLevel;
 use App\Grade;
+use App\User;
 use Validator;
 
 class GradeController extends Controller
@@ -132,8 +133,43 @@ class GradeController extends Controller
             ->with('subject', @$subject)
             ->with('classes', @$classes)
             ->with('class_id', @$input['class_id'])
+            ->with('print', !empty($input['print']) ? $input['print'] : 0)
             ->with('semesters', $semesters)
             ->with('year_levels', $year_levels)
+            ->with('user', $user);
+    }
+    
+    public function overall(Request $request, $username = '')
+    {
+        $user = Auth::user();
+        $input = $request->all();
+        $username = !empty($input['username']) ? $input['username'] : $username;
+        if ($user->type == 'student') {
+            $student = $user;
+        } else if (!empty($username)) {
+            $student = User::where('username', $username)->first();
+        }
+
+        $data = User::whereHas('grades')->get();
+
+        if ($student) {
+            $classes = Classes::whereHas('students', function ($query) use ($student) {
+                $query->where('student_id', $student->id);
+            })->get();
+
+            $subjects = [];
+            foreach ($classes as $key => $class) {
+                $subjects = array_merge((array) $subjects, $class->subjects->toArray());
+            }
+        }
+
+        return view('admin.grades.overall')
+            ->with('page_name', 'View Grades')
+            ->with('data', @$data)
+            ->with('classes', @$classes)
+            ->with('student', @$student)
+            ->with('subjects', @$subjects)
+            ->with('username', @$username)
             ->with('user', $user);
     }
 }
