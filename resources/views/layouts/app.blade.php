@@ -109,6 +109,7 @@
                         <h6 class="collapse-header">Module:</h6>
                         @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
                         <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
+                        <!-- <a class="collapse-item" href="{{ route('ViewGradeRecords') }}">Records</a> -->
                         @endif
                         <a class="collapse-item" href="{{ route('ViewGrade') }}">View</a>
                     </div>

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends($print ? 'layouts.print' : 'layouts.app')
 
 @section('content')
 <div class="grades-management">
-    <div class="filter-container mb-3">
+    <div class="filter-container mb-3 hide-on-print">
         <form action="{{ route('ViewGrade') }}" method="get">
             @if (!empty($classes) && $classes->count())
             <div class="form-group">
@@ -34,15 +34,29 @@
             @endif
         </form>
     </div>
-    
+
+    @if($print)
+    <div class="print-header">
+        <div class="logo-container">
+            <img class="brand-logo" src="{{ asset('img/dclogo.png') }}" alt="Diliman College Logo">
+        </div>
+        <div class="logo-side-text">
+            <div class="title">DILIMAN COLLEGE</div> 
+            <div class="sub">FINAL RATING SHEET</div>
+        </div>
+        <div class="logo-under-text">
+            {{ $data->semester->name }}
+        </div>
+    </div>
+    @endif
 
     @if ($user->type == 'student' && !empty($data) && $data->count())
-    <h5><i class="fas fa-list fa-sm"></i> Subject list</h5>
-    <!-- <div class="row">
+    <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Subject list</h5>
+    <div class="row hide-on-print">
         <div class="col-md-2">
-            <a href="?print=1" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
+            <a href="?print=1" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
-    </div> -->
+    </div>
     <div class="table-container-listing">
         <table class="table table-bordered table-sm">
             <thead>
@@ -132,17 +146,17 @@
                 </tr>
             </tbody>
         </table>
-        @if ($data->students->count() == 0) 
+        @if ($data->subjects->count() == 0) 
             <h5><i class="fas fa-info-circle fa-sm"></i> No grades yet.</h5>
         @endif
     </div>
     @elseif (in_array($user->type, ['admin', 'teacher']))
-    <h5><i class="fas fa-list fa-sm"></i> Student list</h5>
-    <!-- <div class="row">
+    <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Student list</h5>
+    <div class="row hide-on-print">
         <div class="col-md-2">
-            <a href="?print=1" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
+            <a href="?print=1" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
-    </div> -->
+    </div>
     <div class="table-container-listing">
         @if (!empty($subject))                                
         <table class="table table-bordered table-sm">
@@ -226,6 +240,49 @@
         @else
             <h5><i class="fas fa-info-circle fa-sm"></i> Select Subject first.</h5>
         @endif
+    </div>
+    @endif
+
+    @if($print)
+    <div class="print-footer">
+        <div class="left-container">
+            <div class="header">
+                FINAL RATING GUIDELINES:
+            </div>
+<pre>
+1. Rating sheets should be computerized and in triplicate copy
+per subject. 		
+(original copy for the Registrar, duplicate for the Dean, triplicate
+for the Professor/ Instructor)		
+2. Do not forget to put a remark opposite to the grade of the student.
+(Grade of: 1.00 to 3.00 - Passed / 5.00 - Failed / INC - NFE/NFR /W
+- Withdrawn / D - Dropped)		
+3. Separate the list of Regula students from the irregular students
+per course.		
+4. After all the names of your students have been listed, close the
+entry by encoding the asterisks and nothing follows.
+</pre>
+        </div>
+        <div class="right-container">
+            <div class="header">
+                CERTIFIED CORRECT:
+            </div>
+            <div class="signature-container">
+                <div class="name"></div>
+                <div class="line"></div>
+                <div class="title">Dr. Carolina R. Duka</div>
+            </div>
+            <div class="signature-container">
+                <div class="name">Ma'am Emelita D. Bernabe</div>
+                <div class="line"></div>
+                <div class="title">Dean</div>
+            </div>
+            <div class="signature-container">
+                <div class="name">Ms. Girlie Bernardino</div>
+                <div class="line"></div>
+                <div class="title">Registrar</div>
+            </div>
+        </div>
     </div>
     @endif
 </div>
