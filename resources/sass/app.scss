@@ -217,3 +217,83 @@ input.readonly-input {
     padding: 5px 3px;
   }
 }
+
+.print-view {
+  .print-container {
+    max-width: 1000px;
+    margin: auto; 
+    .hide-on-print {
+      display: none;
+    }
+    .print-header {
+      max-width: 800px;
+      margin: auto;
+      display: grid;
+      grid-template-areas: 
+      'logo side'
+      'under under';
+      grid-template-columns: 200px auto;
+      .logo-container {
+        display: grid;
+        grid-area: logo;
+        padding: 30px;
+        img {
+          max-width: 100%;      
+        }
+      }
+      .logo-side-text {
+        display: grid;
+        grid-area: side;
+        .title {
+          display: grid;
+          text-align: center;
+          align-items: end;
+          font-size: 2em;
+        }
+        .sub {
+          display: grid;
+          text-align: center;
+          align-items: start;
+          font-size: 1.5em;
+        }
+      }
+      .logo-under-text {
+        display: grid;
+        grid-area: under;
+        text-align: center;
+        align-items: center;
+        font-size: 18px;
+      }
+    }
+    .print-footer {
+      display: grid;
+      grid-template-columns: 1fr 0.5fr;
+      .left-container {
+        display: grid;
+        .header {
+          display: grid;
+          
+        }
+      }
+      .right-container {
+        display: grid;
+        grid-auto-rows: auto;
+        grid-gap: 50px;    
+        .header {
+          display: grid;
+        }
+        .signature-container {
+          display: grid;
+          align-items: center;
+          justify-items: center;
+          color: #000;
+          .line {
+            height: 2px;
+            width: 70%;
+            background-color: #000;
+          }
+        }
+      }
+    }
+  }
+}
