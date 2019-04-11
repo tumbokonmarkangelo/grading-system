@@ -48,6 +48,38 @@
             {{ $data->semester->name }}
         </div>
     </div>
+    
+        @if ($user->type == 'student' && !empty($data) && $data->count())
+        <div calss="print-details">        
+            <table class="table table-dark table-sm">
+                <tbody>
+                    <tr>
+                        <td>STUDENT NO.: {{ $user->username  }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>NAME: {{ $user->name  }}</td>
+                        <td>YEAR LEVEL: {{ @$data->year_level->name  }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @elseif (in_array($user->type, ['admin', 'teacher']))
+        <div calss="print-details">        
+            <table class="table table-dark table-sm">
+                <tbody>
+                    <tr>
+                        <td>SUBJECT CODE: {{ $subject->subject->code  }}</td>
+                        <td>SUBJECT DESCRIPTION: {{ $subject->subject->description  }}</td>
+                    </tr>
+                    <tr>
+                        <td>COURSE/YR: {{ $data->year_level->name  }}</td>
+                        <td>UNITS: {{ $subject->subject->units  }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @endif
     @endif
 
     @if ($user->type == 'student' && !empty($data) && $data->count())
