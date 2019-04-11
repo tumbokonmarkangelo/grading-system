@@ -13,7 +13,8 @@ class Subject extends Model
         'code',
         'description',
         'semester_id',
-        'year_id'
+        'year_id',
+        'units'
     ];
 
     protected $casts = [

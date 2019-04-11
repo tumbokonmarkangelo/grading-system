@@ -21,7 +21,7 @@ class SemestersTableSeeder extends Seeder
             'code' => '2',
         ]);
         DB::table('semesters')->insert([
-            'name' => 'Third Semester',
+            'name' => 'Summer',
             'code' => '3',
         ]);
     }
