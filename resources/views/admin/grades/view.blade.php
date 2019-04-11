@@ -144,6 +144,7 @@
         </div>
     </div> -->
     <div class="table-container-listing">
+        @if (!empty($subject))                                
         <table class="table table-bordered table-sm">
             <thead>
                 <tr>
@@ -220,8 +221,10 @@
                 @endforeach
             </tbody>
         </table>
-        @if ($data->students->count() == 0) 
+        @elseif ($data->students->count() == 0) 
             <h5><i class="fas fa-info-circle fa-sm"></i> No students assigned.</h5>
+        @else
+            <h5><i class="fas fa-info-circle fa-sm"></i> Select Subject first.</h5>
         @endif
     </div>
     @endif

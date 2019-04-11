@@ -116,6 +116,10 @@ class GradeController extends Controller
             $data = $data->find($input['class_id']);
         }
 
+        if ($user->type == 'teacher') {
+            $data->subjects = $data->subjects->where('teacher_id', $user->id);
+        }
+
         $subject = @$data->subjects[0];
         if (!empty($input['classes_subject_id'])) {
             $subject = $data->subjects->find($input['classes_subject_id']);
