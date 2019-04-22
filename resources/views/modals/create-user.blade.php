@@ -13,6 +13,13 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
+                                    <input type="email" name="email" placeholder="Email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
                                     <input type="text" name="first_name" placeholder="First Name" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
@@ -44,9 +51,6 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <input type="text" name="username" placeholder="Username" class="form-control" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="email" name="email" placeholder="Email" class="form-control">
                                 </div>
                                 <div class="col-md-4">
                                     <input type="password" name="password" placeholder="Password" class="form-control" required>

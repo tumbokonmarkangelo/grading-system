@@ -60,6 +60,7 @@
                         @endforeach
                     @endif
                     <th scope="col" class="text-center">Result</th>
+                    <th scope="col">Remarks</th>
                     <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
@@ -88,6 +89,13 @@
                         @endif
                         <td class="text-center result-container">
                             {{ !empty($grade) ? $grade->computed_grade : 0 }}
+                        </td>
+                        <td>
+                            <select name="remarks" form="form{{$key}}" class="form-control">
+                                <option value=""></option>
+                                <option value="incomplete" {{!empty($grade->remarks) && $grade->remarks == 'incomplete' ? 'selected' : ''}}>Incomplete</option>
+                                <option value="drop" {{!empty($grade->remarks) && $grade->remarks == 'drop' ? 'selected' : ''}}>Drop</option>
+                            </select>
                         </td>
                         <td class="text-center">
                             <button form="form{{$key}}" class="btn btn-success btn-sm" type="submit">Submit</button>

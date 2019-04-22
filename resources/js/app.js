@@ -13,6 +13,27 @@ $(document).ready(function() {
         var confirmation_cancelled_note = $(this).attr('confirmation-cancelled-note');
 
         var isComputation = form.hasClass('form-computation');
+        
+        var isInvalidPassword = false;
+        form.find('input[name="password"]').each(function () {
+            var isChangePassword = $(this).hasClass('change-password');
+            var password = $(this).val();
+            var re = new RegExp("^(((?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]))|((?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]))|((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])))(?=.{6,})");
+
+            if (isChangePassword && password.length > 0 && password.length < 6 || !isChangePassword && !re.test(password) || isChangePassword && password.length > 5 && !re.test(password)) {
+                isInvalidPassword = true;
+            }
+        });
+
+        if (isInvalidPassword) {
+            swal({
+                title: "Invalid password",
+                text:  "Password must contain at least 1 uppercase, 1 lowercase and 1 numeric character.",
+                icon: "warning",
+                dangerMode: true,
+            })
+            return false;
+        }
 
         if (isComputation) {
             var total = 0;

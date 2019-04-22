@@ -11,6 +11,7 @@ class Subject extends Model
     
     protected $fillable = [
         'code',
+        'name',
         'description',
         'semester_id',
         'year_id',
@@ -20,4 +21,14 @@ class Subject extends Model
     protected $casts = [
         'deleted_at' => 'string',
     ];
+    
+    public function semester()
+	{
+		return $this->hasOne('App\Semester', 'id', 'semester_id');
+	}
+    
+    public function year_level()
+	{
+		return $this->hasOne('App\YearLevel', 'id', 'year_id');
+	}
 }
