@@ -13,7 +13,11 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Code</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Description</th>
+                    <th scope="col" class="text-center">Units</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Year Level</th>
                     <th scope="col" class="text-center">Action</th>
                 </tr>
             </thead>
@@ -27,7 +31,19 @@
                             {{ $d->code }}
                         </td>
                         <td>
+                            {{ $d->name }}
+                        </td>
+                        <td>
                             {{ $d->description }}
+                        </td>
+                        <td class="text-center">
+                            {{ $d->units }}
+                        </td>
+                        <td>
+                            {{ @$d->semester->name }}
+                        </td>
+                        <td>
+                            {{ @$d->year_level->name }}
                         </td>
                         <td class="text-center">
                             <form confirmation="true" class="ajax-submit" action="{{ route('DeleteSubject') }}" method="post">

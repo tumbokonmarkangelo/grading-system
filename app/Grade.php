@@ -14,6 +14,7 @@ class Grade extends Model
         'student_id',
         'computed_grade',
         'period',
+        'remarks',
         'scale'
     ];
 

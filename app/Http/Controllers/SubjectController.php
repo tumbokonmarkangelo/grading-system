@@ -35,6 +35,7 @@ class SubjectController extends Controller
 
         $validator = Validator::make($input, [
             'code' => 'required|max:191',
+            'name' => 'max:191',
             'description' => 'max:191',
             'semester_id' => 'integer',
             'year_id' => 'integer',
@@ -76,6 +77,7 @@ class SubjectController extends Controller
 
         $validator = Validator::make($input, [
             'code' => 'required|max:191',
+            'name' => 'max:191',
             'description' => 'max:191',
             'semester_id' => 'integer',
             'year_id' => 'integer',

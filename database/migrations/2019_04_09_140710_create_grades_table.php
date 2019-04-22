@@ -20,6 +20,7 @@ class CreateGradesTable extends Migration
             $table->double('computed_grade', 8, 2);
             $table->integer('scale')->nullable();
             $table->enum('period', ['prelim', 'midterm', 'final']);
+            $table->enum('remarks', ['passed', 'incomplete', 'drop'])->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
