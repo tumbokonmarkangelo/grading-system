@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Grade', 'student_id');
     }
+
+    public function incomplete_grades()
+    {
+        return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'incomplete');
+    }
+
+    public function drop_grades()
+    {
+        return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'drop');
+    }
 }

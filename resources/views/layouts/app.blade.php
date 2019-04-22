@@ -188,6 +188,66 @@
                     @if (!empty($messages))
                         @include('templates.messages')
                     @endif
+                    
+                    @if (!empty($user->type) && in_array($user->type, ['student']) && $user->incomplete_grades->count())
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-exclamation-triangle fa-fw"></i>
+                            <!-- Counter - Messages -->
+                            <span class="badge badge-danger badge-counter">{{ $user->incomplete_grades->count()}}</span>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                            <h6 class="dropdown-header">
+                            Incomplete Grades
+                            </h6>
+                            @foreach ($user->incomplete_grades as $inc_key => $grade)
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <div class="icon-circle bg-warning">
+                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate">{{ $grade->classes_subject->class->code . ' (' . $grade->classes_subject->subject->code . ' - ' . $grade->classes_subject->subject->name . ')'}}</div>
+                                    <div class="small text-gray-500">{{ $grade->classes_subject->teacher->name . ' (' . $grade->classes_subject->class->semester->name . ' - ' . $grade->classes_subject->class->year_level->name . ')' }}</div>
+                                </div>
+                            </a>
+                            @endforeach
+                            <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> -->
+                        </div>
+                    </li>
+                    @endif
+                    
+                    @if (!empty($user->type) && in_array($user->type, ['student']) && $user->drop_grades->count())
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ban fa-fw"></i>
+                            <!-- Counter - Messages -->
+                            <span class="badge badge-danger badge-counter">{{ $user->drop_grades->count()}}</span>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                            <h6 class="dropdown-header">
+                            Drop Subjects
+                            </h6>
+                            @foreach ($user->drop_grades as $drop_key => $grade)
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate">{{ $grade->classes_subject->class->code . ' (' . $grade->classes_subject->subject->code . ' - ' . $grade->classes_subject->subject->name . ')'}}</div>
+                                    <div class="small text-gray-500">{{ $grade->classes_subject->teacher->name . ' (' . $grade->classes_subject->class->semester->name . ' - ' . $grade->classes_subject->class->year_level->name . ')' }}</div>
+                                </div>
+                            </a>
+                            @endforeach
+                            <!-- <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a> -->
+                        </div>
+                    </li>
+                    @endif
 
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
