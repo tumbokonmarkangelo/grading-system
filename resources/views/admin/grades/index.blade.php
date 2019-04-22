@@ -83,7 +83,7 @@
                             @foreach ($data->computations->where('period' , !empty($period) ? $period : 'prelim') as $computation_key => $computation)
                                 <?php unset($grades_item); if (!empty($grade)) {$grades_item = $grade->items->where('computation_id', $computation->id)->first();} ?>
                                 <td>
-                                    <input value="{{!empty($grades_item->value) || $grades_item->value == 0 ? $grades_item->value: ''}}" name="computations[{{ $computation->id }}]" min="0" max="100" form="form{{$key}}" type="number" step="any" class="form-control decimal-input computation-input" computaion-value="{{ $computation->value }}" required>
+                                    <input value="{{!empty($grades_item->value) || isset($grades_item) && $grades_item->value == 0 ? $grades_item->value : ''}}" name="computations[{{ $computation->id }}]" min="0" max="100" form="form{{$key}}" type="number" step="any" class="form-control decimal-input computation-input" computaion-value="{{ $computation->value }}" required>
                                 </td>
                             @endforeach
                         @endif
