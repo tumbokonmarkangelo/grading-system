@@ -35,6 +35,8 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
+                            <th scope="col" class="text-center">Incomplete grades</th>
+                            <th scope="col" class="text-center">Drop subjects</th>
                             <th scope="col" class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -55,6 +57,12 @@
                                 </td>
                                 <td>
                                     {{ $student->email }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $student->incomplete_grades->count() }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $student->drop_grades->count() }}
                                 </td>
                                 <td class="text-center">
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
