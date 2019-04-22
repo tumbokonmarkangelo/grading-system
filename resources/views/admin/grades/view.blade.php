@@ -115,6 +115,7 @@
                             {{ $subject->subject->units }}
                         </td>
                         <?php
+                            $units_counter += $subject->subject->units;
                             $prelim_grade = $subject->grades->where('student_id', $user->id)->where('period', 'prelim')->first()['computed_grade'];
                             $midterm_grade = $subject->grades->where('student_id', $user->id)->where('period', 'midterm')->first()['computed_grade'];
                             $final_grade = $subject->grades->where('student_id', $user->id)->where('period', 'final')->first()['computed_grade'];
@@ -141,7 +142,6 @@
                                 } else if ($final >= doubleval(96.50) && $final <= doubleval(100.00)) {
                                     $scale = doubleval(1.00);
                                 }
-                                $units_counter += $subject->subject->units;
                                 $points_counter += round(($final * $subject->subject->units),2);
                             } else {
                                 $final = 'INC';
