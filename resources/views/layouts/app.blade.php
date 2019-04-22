@@ -110,7 +110,7 @@
                         @if (!empty($user->type) && in_array($user->type, ['teacher']))
                         <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
                         @endif
-                        @if (!empty($user->type) && in_array($user->type, ['admin']))
+                        @if (!empty($user->type) && in_array($user->type, ['admin', 'student']))
                         <!-- <a class="collapse-item" href="{{ route('ViewGradeRecords') }}">Records</a> -->
                         @endif
                         <a class="collapse-item" href="{{ route('ViewGrade') }}">View</a>
