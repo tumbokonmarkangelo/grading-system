@@ -107,8 +107,10 @@
                 <div id="collapseGrades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Module:</h6>
-                        @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
+                        @if (!empty($user->type) && in_array($user->type, ['teacher']))
                         <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
+                        @endif
+                        @if (!empty($user->type) && in_array($user->type, ['admin']))
                         <!-- <a class="collapse-item" href="{{ route('ViewGradeRecords') }}">Records</a> -->
                         @endif
                         <a class="collapse-item" href="{{ route('ViewGrade') }}">View</a>
