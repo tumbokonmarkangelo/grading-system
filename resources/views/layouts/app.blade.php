@@ -35,12 +35,14 @@
             <!-- Divider -->
             <!-- <hr class="sidebar-divider my-0"> -->
 
+            @if (!empty($user->type) && in_array($user->type, ['admin']))
             <!-- Nav Item - Dashboard -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="{{ route('User', ['type' => $user->type]) }}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('ActivitiesLogs') }}">
+                <i class="fas fa-fw fa-clipboard-list"></i>
+                <span>Activity logs</span></a>
+            </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider">

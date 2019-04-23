@@ -144,7 +144,7 @@
                                 }
                                 $points_counter += round(($final * $subject->subject->units),2);
                             } else {
-                                $final = 'INC';
+                                $final = 'Incomplete';
                                 $scale = doubleval(5.00);
                             }
                         ?>
@@ -219,9 +219,15 @@
                             {{ $st->student->middle_name }}
                         </td>
                         <?php
-                            $prelim_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'prelim')->first()['computed_grade'];
-                            $midterm_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'midterm')->first()['computed_grade'];
-                            $final_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'final')->first()['computed_grade'];
+                            $prelim_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'prelim')->first();
+                            $prelim_remarks = $prelim_grade['remarks'];
+                            $prelim_grade = $prelim_grade['computed_grade'];
+                            $midterm_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'midterm')->first();
+                            $midterm_remarks = $midterm_grade['remarks'];
+                            $midterm_grade = $midterm_grade['computed_grade'];
+                            $final_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'final')->first();
+                            $final_remarks = $final_grade['remarks'];
+                            $final_grade = $final_grade['computed_grade'];
                             if (!empty($prelim_grade) && !empty($midterm_grade) && !empty($final_grade)) {
                                 $final = doubleval(($prelim_grade ? $prelim_grade : 0)) * doubleval('0.'.$subject->prelim) + doubleval(($midterm_grade ? $midterm_grade : 0)) * doubleval('0.'.$subject->midterm) + doubleval(($final_grade ? $final_grade : 0)) * doubleval('0.'.$subject->final);
                                 $final = round($final, 2);
@@ -249,9 +255,16 @@
                                     $remarks = 'FAILED';
                                 }
                             } else {
-                                $final = 'INC';
+                                $final = 'Incomplete';
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
+                            }
+                            if (!empty($prelim_remarks) && $remarks == 'FAILED') {
+                                $remarks = $prelim_remarks;
+                            } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
+                                $remarks = $midterm_remarks;
+                            } else if (!empty($final_remarks) && $remarks == 'FAILED') {
+                                $remarks = $final_remarks;
                             }
                         ?>
                         <td class="text-center">
@@ -261,7 +274,7 @@
                             {{ $scale }}
                         </td>
                         <td class="text-center">
-                            {{ @$remarks }}
+                            {{ ucfirst(@$remarks) }}
                         </td>
                     </tr>
                 @endforeach

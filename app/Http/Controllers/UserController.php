@@ -46,6 +46,12 @@ class UserController extends Controller
             $user->type = $input['type'];
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->save();
+            $activity['value_to'] = json_encode($user);
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' create new user.';
+            $user->activities()->create($activity);
             
             $response['notifMessage'] = 'Saved request.';
             $response['resetForm'] = true;
@@ -89,6 +95,8 @@ class UserController extends Controller
             $response['message'] = $validator->errors()->all();
             $status = 422;
         } else {
+            $activity['value_from'] = json_encode($user);
+            
             $user->first_name = $input['first_name'];
             $user->middle_name = $input['middle_name'];
             $user->last_name = $input['last_name'];
@@ -98,6 +106,12 @@ class UserController extends Controller
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->update();
             
+            $activity['value_to'] = json_encode($user);
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' update existing user.';
+            $user->activities()->create($activity);
             $response['notifMessage'] = 'Update request saved.';
             $status = 201;
         }
@@ -113,6 +127,12 @@ class UserController extends Controller
             $response['notifMessage'] = 'Failed request.';
             $status = 422;
         } else {
+            $data = User::find($input['id']);
+            $activity['value_from'] = json_encode($data);
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' delete user.';
+            $data->activities()->create($activity);
             User::destroy($input['id']);
             
             $response['notifMessage'] = 'Deletion request complete.';
