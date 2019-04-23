@@ -53,7 +53,6 @@ class ClassController extends Controller
             $data = Classes::create($input);
             $activity['value_to'] = json_encode($data);
 
-
             $user = Auth::user();
             $activity['user_id'] = $user->id;
             $activity['log'] = $user->name . ' create new class.';

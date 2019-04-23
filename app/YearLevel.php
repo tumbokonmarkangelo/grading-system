@@ -10,9 +10,4 @@ class YearLevel extends Model
         'name',
         'code'
     ];
-    
-    public function activities()
-    {
-        return $this->morphMany('App\Activity', 'loggable');
-    }
 }

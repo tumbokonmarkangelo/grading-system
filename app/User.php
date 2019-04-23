@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'drop');
     }
+    
+    public function activities()
+    {
+        return $this->morphMany('App\Activity', 'loggable');
+    }
 }
