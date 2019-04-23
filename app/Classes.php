@@ -41,4 +41,9 @@ class Classes extends Model
 	{
 		return $this->hasOne('App\YearLevel', 'id', 'year_id');
 	}
+    
+    public function activities()
+    {
+        return $this->morphMany('App\Activity', 'loggable');
+    }
 }

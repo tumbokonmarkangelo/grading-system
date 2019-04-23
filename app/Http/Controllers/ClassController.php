@@ -51,6 +51,13 @@ class ClassController extends Controller
             $status = 422;
         } else {
             $data = Classes::create($input);
+            $activity['value_to'] = json_encode($data);
+
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' create new class.';
+            $data->activities()->create($activity);
             
             $response['notifMessage'] = 'Saved request.';
             $response['resetForm'] = true;
@@ -91,7 +98,14 @@ class ClassController extends Controller
             $status = 422;
         } else {
             $data = Classes::find($id);
+            $activity['value_from'] = json_encode($data);
             $data->update($input);
+            $activity['value_to'] = json_encode($data);
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' update existing class.';
+            $data->activities()->create($activity);
             
             $response['notifMessage'] = 'Update request saved.';
             $status = 201;
@@ -108,6 +122,13 @@ class ClassController extends Controller
             $response['notifMessage'] = 'Failed request.';
             $status = 422;
         } else {
+            $data = Classes::find($input['id']);
+            $activity['value_from'] = json_encode($data);
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' delete class.';
+            $data->activities()->create($activity);
+
             Classes::destroy($input['id']);
             
             $response['notifMessage'] = 'Deletion request complete.';
@@ -180,11 +201,30 @@ class ClassController extends Controller
                     $computation_template = Computation::where('classes_subject_id', 0)->get();
                     foreach ($computation_template as $key => $computation) {
                         $data->computations()->create($computation->toArray());
+                        $activity['value_to'] = json_encode($data);
+            
+                        $user = Auth::user();
+                        $activity['user_id'] = $user->id;
+                        $activity['log'] = $user->name . ' create new class subject.';
+                        $data->activities()->create($activity);
                     }
                 } else if ($subject['action'] == 'edit') {
                     $data = ClassesSubject::find($subject['id']);
+                    $activity['value_from'] = json_encode($data);
                     $data->update($subject);
+                    $activity['value_to'] = json_encode($data);
+        
+                    $user = Auth::user();
+                    $activity['user_id'] = $user->id;
+                    $activity['log'] = $user->name . ' update existing class subject.';
+                    $data->activities()->create($activity);
                 } else if ($subject['action'] == 'delete') {
+                    $data = ClassesSubject::find($subject['id']);
+                    $activity['value_from'] = json_encode($data);
+                    $user = Auth::user();
+                    $activity['user_id'] = $user->id;
+                    $activity['log'] = $user->name . ' delete class.';
+                    $data->activities()->create($activity);
                     ClassesSubject::destroy($subject['id']);
                 }
             }
@@ -249,10 +289,29 @@ class ClassController extends Controller
             foreach ($students as $key => $student) {
                 if (empty($student['action'])) {
                     $data = ClassesStudent::create($student);
+                    $activity['value_to'] = json_encode($data);
+        
+                    $user = Auth::user();
+                    $activity['user_id'] = $user->id;
+                    $activity['log'] = $user->name . ' create new class subject.';
+                    $data->activities()->create($activity);
                 } else if ($student['action'] == 'edit') {
                     $data = ClassesStudent::find($student['id']);
+                    $activity['value_from'] = json_encode($data);
                     $data->update($student);
+                    $activity['value_to'] = json_encode($data);
+        
+                    $user = Auth::user();
+                    $activity['user_id'] = $user->id;
+                    $activity['log'] = $user->name . ' update existing class subject.';
+                    $data->activities()->create($activity);
                 } else if ($student['action'] == 'delete') {
+                    $data = ClassesSubject::find($student['id']);
+                    $activity['value_from'] = json_encode($data);
+                    $user = Auth::user();
+                    $activity['user_id'] = $user->id;
+                    $activity['log'] = $user->name . ' delete class.';
+                    $data->activities()->create($activity);
                     ClassesStudent::destroy($student['id']);
                 }
             }

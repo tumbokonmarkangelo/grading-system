@@ -49,4 +49,9 @@ class ClassesSubject extends Model
     {
         return $this->hasMany('App\Grade', 'classes_subject_id');
     }
+    
+    public function activities()
+    {
+        return $this->morphMany('App\Activity', 'loggable');
+    }
 }

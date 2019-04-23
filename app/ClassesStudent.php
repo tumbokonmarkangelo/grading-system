@@ -25,4 +25,9 @@ class ClassesStudent extends Model
 	{
 		return $this->hasOne('App\User', 'id', 'student_id');
 	}
+    
+    public function activities()
+    {
+        return $this->morphMany('App\Activity', 'loggable');
+    }
 }
