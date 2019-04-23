@@ -47,6 +47,12 @@ class SubjectController extends Controller
             $status = 422;
         } else {
             $data = Subject::create($input);
+            $activity['value_to'] = json_encode($data);
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' create new subject.';
+            $data->activities()->create($activity);
             
             $response['notifMessage'] = 'Saved request.';
             $response['resetForm'] = true;
@@ -89,7 +95,14 @@ class SubjectController extends Controller
             $status = 422;
         } else {
             $data = Subject::find($id);
+            $activity['value_from'] = json_encode($data);
             $data->update($input);
+            $activity['value_to'] = json_encode($data);
+
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' update existing subject.';
+            $data->activities()->create($activity);
             
             $response['notifMessage'] = 'Update request saved.';
             $status = 201;
@@ -106,6 +119,12 @@ class SubjectController extends Controller
             $response['notifMessage'] = 'Failed request.';
             $status = 422;
         } else {
+            $data = Subject::find($input['id']);
+            $activity['value_from'] = json_encode($data);
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' delete subject.';
+            $data->activities()->create($activity);
             Subject::destroy($input['id']);
             
             $response['notifMessage'] = 'Deletion request complete.';

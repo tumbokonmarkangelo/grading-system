@@ -74,10 +74,23 @@ class GradeController extends Controller
         } else {
             $data = Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->where('period', $input['period'])->first();
             if ($data) {
+                $activity['value_from'] = json_encode($data);
                 $data->update($input);
+                $activity['value_to'] = json_encode($data);
+    
+                $user = Auth::user();
+                $activity['user_id'] = $user->id;
+                $activity['log'] = $user->name . ' update grade assigned for ' . $data->student->name . '.';
+                $data->activities()->create($activity);
                 $data->items()->delete();
             } else {
                 $data = Grade::create($input);
+                $activity['value_to'] = json_encode($data);
+    
+                $user = Auth::user();
+                $activity['user_id'] = $user->id;
+                $activity['log'] = $user->name . ' assign grade for ' . $data->student->name . '.';
+                $data->activities()->create($activity);
             }
             foreach ($grade_item as $key => $item) {
                 $data->items()->create($item);

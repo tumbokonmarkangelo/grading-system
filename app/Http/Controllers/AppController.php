@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Subject;
 use App\Classes;
+use App\Activity;
 
 class AppController extends Controller
 {
@@ -27,6 +28,10 @@ class AppController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $activity['user_id'] = $user->id;
+            $activity['log'] = $user->name . ' login to system.';
+            $activity = Activity::create($activity);
             return redirect()->intended('/');
         } else {
             return redirect()->intended('/')->with('authenticate_message', 'Please check login credentials.');

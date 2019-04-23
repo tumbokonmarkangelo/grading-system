@@ -51,7 +51,10 @@ class User extends Authenticatable
 
     public function getNameAttribute()
     {
-        return "{$this->first_name} {$this->middle_name} {$this->last_name}";
+        $first_name = (!empty($this->first_name) ? $this->first_name . ' ' : '');
+        $middle_name = (!empty($this->middle_name) ? $this->middle_name . ' ' : '');
+        $last_name = (!empty($this->last_name) ? $this->last_name : '');
+        return "{$first_name}{$middle_name}{$last_name}";
     }
 
     public function grades()
@@ -67,5 +70,10 @@ class User extends Authenticatable
     public function drop_grades()
     {
         return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'drop');
+    }
+    
+    public function activities()
+    {
+        return $this->morphMany('App\Activity', 'loggable');
     }
 }
