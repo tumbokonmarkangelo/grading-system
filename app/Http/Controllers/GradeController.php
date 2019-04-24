@@ -22,7 +22,9 @@ class GradeController extends Controller
         $input = $request->all();
         if (!empty($input['subject'])) {
             $data = ClassesSubject::find($input['subject']);
-            $students = $data->class->students()->doesntHave('drop_grades')->get();
+            $students = $data->class->students()->whereDoesntHave('grades', function ($query) use ($data) {
+                $query->where('classes_subject_id', $data->id)->where('remarks', 'drop')->where('period', null);
+            })->get();
         }
         
         $subjects = new ClassesSubject;
@@ -172,26 +174,80 @@ class GradeController extends Controller
             $student = User::where('username', $username)->first();
         }
 
-        $data = User::whereHas('grades')->get();
+        $students = User::whereHas('grades')->get();
 
-        if ($student) {
-            $classes = Classes::whereHas('students', function ($query) use ($student) {
+        if (isset($student)) {
+            $classes_id = Classes::whereHas('students', function ($query) use ($student) {
                 $query->where('student_id', $student->id);
-            })->get();
+            })->pluck('id');
 
-            $subjects = [];
-            foreach ($classes as $key => $class) {
-                $subjects = array_merge((array) $subjects, $class->subjects->toArray());
-            }
+            $subjects = ClassesSubject::whereIn('class_id', $classes_id)->get();
+
+            // $subjects = [];
+            // foreach ($classes as $key => $class) {
+            //     $subjects = array_merge((array) $subjects, $class->subjects->toArray());
+            // }
         }
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
 
         return view('admin.grades.overall')
             ->with('page_name', 'View Grades')
-            ->with('data', @$data)
+            ->with('students', @$students)
             ->with('classes', @$classes)
             ->with('student', @$student)
             ->with('subjects', @$subjects)
             ->with('username', @$username)
+            ->with('print', !empty($input['print']) ? $input['print'] : 0)
+            ->with('semesters', @$semesters)
+            ->with('year_levels', @$year_levels)
+            ->with('user', $user);
+    }
+    
+    public function class_record(Request $request)
+    {
+        $semesters = Semester::get();
+        $year_levels = YearLevel::get();
+
+        $user = Auth::user();
+        $input = $request->all();
+        $classes = new Classes;
+        if ($user->type == 'student') {
+            $classes = $classes->whereHas('students', function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+            });
+            $grades = Grade::where('student_id', $user->id)->get();
+        } else if ($user->type == 'teacher') {
+            $classes = $classes->whereHas('subjects', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            });
+        }
+        $classes = $classes->get();
+
+        $data = $classes[0];
+        if (!empty($input['class_id'])) {
+            $data = $data->find($input['class_id']);
+        }
+
+        if ($user->type == 'teacher') {
+            $data->subjects = $data->subjects->where('teacher_id', $user->id);
+        }
+
+        $subject = @$data->subjects[0];
+        if (!empty($input['classes_subject_id'])) {
+            $subject = $data->subjects->find($input['classes_subject_id']);
+        }
+        
+        return view('admin.grades.class-record')
+            ->with('page_name', 'View Class Record')
+            ->with('grades', @$grades)
+            ->with('data', @$data)
+            ->with('subject', @$subject)
+            ->with('classes', @$classes)
+            ->with('class_id', @$input['class_id'])
+            ->with('print', !empty($input['print']) ? $input['print'] : 0)
+            ->with('semesters', $semesters)
+            ->with('year_levels', $year_levels)
             ->with('user', $user);
     }
 }
