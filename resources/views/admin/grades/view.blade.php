@@ -94,7 +94,7 @@
             <thead>
                 <tr>
                     <th scope="col">Subject code</th>
-                    <th scope="col">Description</th>
+                    <th scope="col">Subject name</th>
                     <th scope="col" class="text-center">Units</th>
                     <th scope="col" class="text-center">Final</th>
                     <th scope="col" class="text-center">Scale</th>
@@ -110,7 +110,7 @@
                             {{ $subject->subject->code }}
                         </th>
                         <td>
-                            {{ $subject->subject->grades }}
+                            {{ $subject->subject->name }}
                         </td>
                         <td class="text-center">
                             {{ $subject->subject->units }}
@@ -159,7 +159,7 @@
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
-                            if (@$student_status->remarks !== 'drop') {
+                            if (@$student_status->remarks == 'drop') {
                                 $remarks = strtoupper('dropped');
                             } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
                                 $remarks = strtoupper($prelim_remarks);
@@ -284,7 +284,7 @@
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
-                            if (@$student_status->remarks !== 'drop') {
+                            if (@$student_status->remarks == 'drop') {
                                 $remarks = strtoupper('dropped');
                             } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
                                 $remarks = strtoupper($prelim_remarks);
