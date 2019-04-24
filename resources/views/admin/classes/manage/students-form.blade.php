@@ -5,9 +5,10 @@
             <label>ID</label>
         </div>
         <div class="col-md-4">
-            <label>Student</label>
+            <label>Student Name</label>
         </div>
         <div class="col-md-4">
+            <label>Student Status</label>
         </div>
         <div class="col-md-3 text-center">
             <label>Action</label>
@@ -21,16 +22,25 @@
                 <input type="hidden" name="class_id[]" value="{{ $data->id }}" disabled>
             </div>
             <div class="col-md-4 select2-container">
-                <select type="text" name="student_id[]" placeholder="Select Student" class="form-control select2" required disabled>
-                    <option value="">Select Student</option>
-                    @if ($students->count())
-                        @foreach ($students as $key => $student)
-                            <option value="{{ $student->id }}" {{ $cs->student_id == $student->id ? 'selected' : '' }}>{{ $student->name, 30 }}</option>
-                        @endforeach
-                    @endif
-                </select>
+                @if (!empty($user = Auth::user()) && $user->type == 'admin')
+                    <select type="text" name="student_id[]" placeholder="Select Student" class="form-control select2" required disabled>
+                        <option value="">Select Student</option>
+                        @if ($students->count())
+                            @foreach ($students as $key => $student)
+                                <option value="{{ $student->id }}" {{ $cs->student_id == $student->id ? 'selected' : '' }}>{{ $student->name, 30 }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                @else
+                    <input type="text" class="form-control readonly-input" value="{{ $cs->student->name }}" required readonly disabled>
+                    <input type="hidden" name="student_id[]" value="{{ $cs->student_id }}" required disabled>
+                @endif
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 select2-container">
+                <select name="status[]" class="form-control select2" required disabled>
+                    <option value="active" {{!empty($cs->status) && $cs->status == 'active' ? 'selected' : ''}}>Active</option>
+                    <option value="drop" {{!empty($cs->status) && $cs->status == 'drop' ? 'selected' : ''}}>Drop from class</option>
+                </select>
             </div>
             <div class="col-md-3 text-center action-container">
                 <button class="btn btn-success btn-sm" type="button" value="edit"><span class="default-view">Edit</span><span class="switch-view"><i class="fas fa-times fa-sm"></i> Edit</span></button>

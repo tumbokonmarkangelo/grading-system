@@ -23,6 +23,8 @@ class RedirectIfAuthenticated
                 return redirect()->route('UsersManagement');
             } else if ($user->type == 'teacher') {
                 return redirect()->route('GradesManagement');
+            } else if ($user->type == 'student') {
+                return redirect()->route('ViewGrade');
             } else {
                 return redirect()->route('User');
             }

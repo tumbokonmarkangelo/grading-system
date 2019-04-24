@@ -12,6 +12,7 @@ class ClassesStudent extends Model
     protected $fillable = [
         'class_id',
         'student_id',
+        'status',
         'code',
         'semester_id',
         'year_id'
@@ -25,6 +26,26 @@ class ClassesStudent extends Model
 	{
 		return $this->hasOne('App\User', 'id', 'student_id');
 	}
+    
+    public function class()
+	{
+		return $this->hasOne('App\Classes', 'id', 'class_id');
+	}
+
+    public function grades()
+    {
+        return $this->hasMany('App\Grade', 'student_id', 'student_id');
+    }
+
+    public function incomplete_grades()
+    {
+        return $this->hasMany('App\Grade', 'student_id', 'student_id')->where('remarks', 'incomplete');
+    }
+
+    public function drop_grades()
+    {
+        return $this->hasMany('App\Grade', 'student_id', 'student_id')->where('remarks', 'drop')->where('period', null);
+    }
     
     public function activities()
     {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Classes;
 use App\ClassesSubject;
+use App\ClassesStudent;
 use App\Computation;
 use App\Semester;
 use App\YearLevel;
@@ -21,7 +22,7 @@ class GradeController extends Controller
         $input = $request->all();
         if (!empty($input['subject'])) {
             $data = ClassesSubject::find($input['subject']);
-            $students = $data->class->students;
+            $students = $data->class->students()->doesntHave('drop_grades')->get();
         }
         
         $subjects = new ClassesSubject;
@@ -44,27 +45,34 @@ class GradeController extends Controller
     public function assign(Request $request, $id)
     {
         $input = $request->except('computations');
-        $computations = $request->only('computations')['computations'];
-        
-        $input['computed_grade'] = 0;
-        $grade_item;
-        foreach ($computations as $computation_id => $value) {
-            $computation = Computation::find($computation_id);
-            $grade_item[] = ['value' => $value,
-                            'computation_id' => $computation_id,
-                            'computation_name' => $computation->name,
-                            'computation_description' => $computation->description,
-                            'computation_value' => $computation->value
-                        ];
-            $computation_item[] = doubleval($value) * doubleval('0.'.$computation->value);
-            $input['computed_grade'] += doubleval($value) * doubleval('0.'.$computation->value);
+        $input['computed_grade'] = '0';
+        if (@$input['remarks'] == 'drop') {
+            Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->whereIn('period', ['prelim', 'midterm', 'final'])->delete();
+            $response['redirect'] = route('GradesManagement', ['subject' => $input['classes_subject_id'], 'period' => @$input['period']]);
+            $input['period'] = null;
+        } else {
+            Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->where('period', null)->where('remarks', 'drop')->forceDelete();
+            
+            $computations = $request->only('computations')['computations'];
+            $grade_item;
+            foreach ($computations as $computation_id => $value) {
+                $computation = Computation::find($computation_id);
+                $grade_item[] = ['value' => $value,
+                                'computation_id' => $computation_id,
+                                'computation_name' => $computation->name,
+                                'computation_description' => $computation->description,
+                                'computation_value' => $computation->value
+                            ];
+                $computation_item[] = doubleval($value) * doubleval('0.'.$computation->value);
+                $input['computed_grade'] += doubleval($value) * doubleval('0.'.$computation->value);
+            }
         }
 
         $validator = Validator::make($input, [
             'classes_subject_id' => 'required|integer',
             'student_id' => 'required|integer',
             'computed_grade' => 'required|numeric',
-            'period' => 'required|in:prelim,midterm,final',
+            'period' => 'nullable|in:prelim,midterm,final',
         ]);
 
         if ($validator->fails()) {
@@ -73,6 +81,7 @@ class GradeController extends Controller
             $status = 422;
         } else {
             $data = Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->where('period', $input['period'])->first();
+            
             if ($data) {
                 $activity['value_from'] = json_encode($data);
                 $data->update($input);
@@ -92,13 +101,13 @@ class GradeController extends Controller
                 $activity['log'] = $user->name . ' assign grade for ' . $data->student->name . '.';
                 $data->activities()->create($activity);
             }
-            foreach ($grade_item as $key => $item) {
-                $data->items()->create($item);
+            if (!empty($grade_item)) {
+                foreach ($grade_item as $key => $item) {
+                    $data->items()->create($item);
+                }
             }
             
             $response['notifMessage'] = 'Saved request.';
-            // $response['resetForm'] = true;
-            // $response['redirect'] = route('ClassesManagement');
             $status = 201;
         }
 

@@ -17,6 +17,7 @@ class CreateClassesStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('class_id');
             $table->integer('student_id');
+            $table->enum('status', ['active', 'drop'])->default('active');
             $table->string('code')->nullable();
             $table->integer('semester_id')->nullable();
             $table->integer('year_id')->nullable();

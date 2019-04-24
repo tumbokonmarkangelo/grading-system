@@ -53,7 +53,7 @@
                         @endif
                         <td class="text-center">
                             <a href="{{ route('ManageClassSubject', [$d->id]) }}" class="btn btn-info btn-sm"><i class="fas fa-chalkboard-teacher fa-sm"></i> Subjects</a>
-                            @if (!empty($user = Auth::user()) && $user->type == 'admin')
+                            @if (!empty($user = Auth::user()) && in_array($user->type, ['admin']))
                             <a href="{{ route('ManageClassStudent', [$d->id]) }}" class="btn btn-info btn-sm"><i class="fas fa-user-graduate fa-sm"></i> Student</a>
                             @endif
                         </td>
