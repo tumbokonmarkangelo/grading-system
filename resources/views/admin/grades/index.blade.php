@@ -48,6 +48,7 @@
     
     @if (!empty($students) && $students->count())
     <h5><i class="fas fa-list fa-sm"></i> Students list</h5>
+    <!-- <a href="{{ route('ManageClassStudent', [$data->class_id]) }}" class="btn btn-info btn-sm"><i class="fas fa-user-graduate fa-sm"></i> Manage Class Students</a> -->
     <div class="table-container-listing">
         <table class="table table-striped table-sm">
             <thead>
@@ -60,8 +61,8 @@
                         @endforeach
                     @endif
                     <th scope="col" class="text-center">Result</th>
-                    <th scope="col">Remarks</th>
-                    <th scope="col" class="text-center">Action</th>
+                    <th scope="col" style="min-width:140px">Remarks</th>
+                    <th scope="col" class="text-center" colspan="2">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +74,12 @@
                                 <input type="hidden" name="student_id" value="{{ $d->student->id }}">
                                 <input type="hidden" name="period" value="{{ !empty($period) ? $period : 'prelim' }}">
                             </form>
+                            <form id="dropForm{{$key}}" class="ajax-submit" action="{{ route('AssignGrades', [$data->id]) }}" method="post" confirmation="true" confirmation-note="Once dropped, you may not be able to manage this student grades for this class subject." confirmation-cancelled-note="Student remain active.">
+                                <input type="hidden" name="classes_subject_id" value="{{ $data->id }}">
+                                <input type="hidden" name="student_id" value="{{ $d->student->id }}">
+                                <input type="hidden" name="period" value="{{ !empty($period) ? $period : 'prelim' }}">
+                                <input type="hidden" name="remarks" value="drop">
+                            </form>
                             {{ $d->student->username }}
                         </th>
                         <td>
@@ -83,7 +90,7 @@
                             @foreach ($data->computations->where('period' , !empty($period) ? $period : 'prelim') as $computation_key => $computation)
                                 <?php unset($grades_item); if (!empty($grade)) {$grades_item = $grade->items->where('computation_id', $computation->id)->first();} ?>
                                 <td>
-                                    <input value="{{!empty($grades_item->value) || isset($grades_item) && $grades_item->value == 0 ? $grades_item->value : ''}}" name="computations[{{ $computation->id }}]" min="0" max="100" form="form{{$key}}" type="number" step="any" class="form-control decimal-input computation-input" computaion-value="{{ $computation->value }}" required>
+                                    <input value="{{!empty($grades_item->value) || isset($grades_item) && $grades_item->value == 0 ? $grades_item->value : 0}}" name="computations[{{ $computation->id }}]" min="0" max="100" form="form{{$key}}" type="number" step="any" class="form-control decimal-input computation-input" computaion-value="{{ $computation->value }}" required>
                                 </td>
                             @endforeach
                         @endif
@@ -92,13 +99,16 @@
                         </td>
                         <td>
                             <select name="remarks" form="form{{$key}}" class="form-control">
-                                <option value=""></option>
+                                <option value="">No remarks</option>
                                 <option value="incomplete" {{!empty($grade->remarks) && $grade->remarks == 'incomplete' ? 'selected' : ''}}>Incomplete</option>
-                                <option value="drop" {{!empty($grade->remarks) && $grade->remarks == 'drop' ? 'selected' : ''}}>Drop</option>
+                                <!-- <option value="drop" {{!empty($grade->remarks) && $grade->remarks == 'drop' ? 'selected' : ''}}>Drop</option> -->
                             </select>
                         </td>
                         <td class="text-center">
                             <button form="form{{$key}}" class="btn btn-success btn-sm" type="submit">Submit</button>
+                        </td>
+                        <td class="text-center">
+                            <button form="dropForm{{$key}}" class="btn btn-danger btn-sm" type="submit">Drop</button>
                         </td>
                     </tr>
                 @endforeach

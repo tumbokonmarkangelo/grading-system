@@ -150,7 +150,7 @@ class ClassController extends Controller
         
         
         return view('admin.classes.manage.subjects')
-            ->with('page_name', 'Edit Class Subjects')
+            ->with('page_name', 'Manage Class Subjects')
             ->with('page_description', '(Class code: '.$data->code.')')
             ->with('subjects', $subjects)
             ->with('teachers', $teachers)
@@ -243,7 +243,7 @@ class ClassController extends Controller
         
         
         return view('admin.classes.manage.students')
-            ->with('page_name', 'Edit Class Subjects')
+            ->with('page_name', 'Manage Class Students')
             ->with('page_description', '(Class code: '.$data->code.')')
             ->with('students', $students)
             ->with('data', $data)
@@ -305,7 +305,7 @@ class ClassController extends Controller
                     $activity['log'] = $user->name . ' update existing class subject.';
                     $data->activities()->create($activity);
                 } else if ($student['action'] == 'delete') {
-                    $data = ClassesSubject::find($student['id']);
+                    $data = ClassesStudent::find($student['id']);
                     $activity['value_from'] = json_encode($data);
                     $user = Auth::user();
                     $activity['user_id'] = $user->id;

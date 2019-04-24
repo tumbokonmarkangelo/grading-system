@@ -69,7 +69,12 @@ class User extends Authenticatable
 
     public function drop_grades()
     {
-        return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'drop');
+        return $this->hasMany('App\Grade', 'student_id')->where('remarks', 'drop')->where('period', null);
+    }
+
+    public function drop_classes()
+    {
+        return $this->hasMany('App\ClassesStudent', 'student_id')->where('status', 'drop');
     }
     
     public function activities()
