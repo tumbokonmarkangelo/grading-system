@@ -98,6 +98,7 @@
                     <th scope="col" class="text-center">Units</th>
                     <th scope="col" class="text-center">Final</th>
                     <th scope="col" class="text-center">Scale</th>
+                    <th scope="col" class="text-center">Remarks</th>
                 </tr>
             </thead>
             <tbody>
@@ -115,14 +116,21 @@
                             {{ $subject->subject->units }}
                         </td>
                         <?php
-                            $units_counter += $subject->subject->units;
-                            $prelim_grade = $subject->grades->where('student_id', $user->id)->where('period', 'prelim')->first()['computed_grade'];
-                            $midterm_grade = $subject->grades->where('student_id', $user->id)->where('period', 'midterm')->first()['computed_grade'];
-                            $final_grade = $subject->grades->where('student_id', $user->id)->where('period', 'final')->first()['computed_grade'];
+                            $student_status = $subject->grades->where('student_id', $user->id)->where('period', null)->first();
+                            if (@$student_status->remarks !== 'drop') $units_counter += $subject->subject->units;
+                            $prelim_grade = $subject->grades->where('student_id', $user->id)->where('period', 'prelim')->first();
+                            $prelim_remarks = $prelim_grade['remarks'];
+                            $prelim_grade = $prelim_grade['computed_grade'];
+                            $midterm_grade = $subject->grades->where('student_id', $user->id)->where('period', 'midterm')->first();
+                            $midterm_remarks = $midterm_grade['remarks'];
+                            $midterm_grade = $midterm_grade['computed_grade'];
+                            $final_grade = $subject->grades->where('student_id', $user->id)->where('period', 'final')->first();
+                            $final_remarks = $final_grade['remarks'];
+                            $final_grade = $final_grade['computed_grade'];
                             if (!empty($prelim_grade) && !empty($midterm_grade) && !empty($final_grade)) {
                                 $final = doubleval(($prelim_grade ? $prelim_grade : 0)) * doubleval('0.'.$subject->prelim) + doubleval(($midterm_grade ? $midterm_grade : 0)) * doubleval('0.'.$subject->midterm) + doubleval(($final_grade ? $final_grade : 0)) * doubleval('0.'.$subject->final);
                                 $final = round($final, 2);
-                                $scale = doubleval(5.00);
+                                $remarks = 'PASSED';
                                 if ($final >= doubleval(74.50) && $final <= doubleval(75.49)) {
                                     $scale = doubleval(3.00);
                                 } else if ($final >= doubleval(75.50) && $final <= doubleval(78.49)) {
@@ -141,18 +149,34 @@
                                     $scale = doubleval(1.25);
                                 } else if ($final >= doubleval(96.50) && $final <= doubleval(100.00)) {
                                     $scale = doubleval(1.00);
-                                }
-                                $points_counter += round(($final * $subject->subject->units),2);
+                                } else {
+                                    $scale = doubleval(5.00);
+                                    $remarks = 'FAILED';
+                                } 
+                                if (@$student_status->remarks !== 'drop') $points_counter += round(($final * $subject->subject->units),2);
                             } else {
                                 $final = 'Incomplete';
                                 $scale = doubleval(5.00);
+                                $remarks = 'FAILED';
+                            }
+                            if (@$student_status->remarks !== 'drop') {
+                                $remarks = strtoupper('dropped');
+                            } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
+                                $remarks = strtoupper($prelim_remarks);
+                            } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
+                                $remarks = strtoupper($midterm_remarks);
+                            } else if (!empty($final_remarks) && $remarks == 'FAILED') {
+                                $remarks = strtoupper($final_remarks);
                             }
                         ?>
                         <td class="text-center">
-                            {{ $final }}
+                            {{ $remarks == 'DROPPED' ? '-' : $final }}
                         </td>
                         <td class="text-center">
-                            {{ $scale }}
+                            {{ $remarks == 'DROPPED' ? '-' : $scale }}
+                        </td>
+                        <td class="text-center">
+                            {{ ucfirst(@$remarks) }}
                         </td>
                     </tr>
                 @endforeach
@@ -163,7 +187,7 @@
                     <td  class="text-center text-success">
                         {{ $units_counter }}
                     </td>
-                    <td colspan="2" >
+                    <td colspan="3" >
                     </td>
                 </tr>
                 <tr>
@@ -173,7 +197,7 @@
                     <td  class="text-center text-success">
                         {{ round($points_counter / $units_counter, 2) }}
                     </td>
-                    <td colspan="2" >
+                    <td colspan="3" >
                     </td>
                 </tr>
             </tbody>
@@ -219,6 +243,7 @@
                             {{ $st->student->middle_name }}
                         </td>
                         <?php
+                            $student_status = $subject->grades->where('student_id', $user->id)->where('period', null)->first();
                             $prelim_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'prelim')->first();
                             $prelim_remarks = $prelim_grade['remarks'];
                             $prelim_grade = $prelim_grade['computed_grade'];
@@ -259,22 +284,24 @@
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
-                            if (!empty($prelim_remarks) && $remarks == 'FAILED') {
-                                $remarks = $prelim_remarks;
+                            if (@$student_status->remarks !== 'drop') {
+                                $remarks = strtoupper('dropped');
+                            } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
+                                $remarks = strtoupper($prelim_remarks);
                             } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
-                                $remarks = $midterm_remarks;
+                                $remarks = strtoupper($midterm_remarks);
                             } else if (!empty($final_remarks) && $remarks == 'FAILED') {
-                                $remarks = $final_remarks;
+                                $remarks = strtoupper($final_remarks);
                             }
                         ?>
                         <td class="text-center">
-                            {{ $final }}
+                            {{ $remarks == 'DROPPED' ? '-' : $final }}
                         </td>
                         <td class="text-center">
-                            {{ $scale }}
+                            {{ $remarks == 'DROPPED' ? '-' : $scale }}
                         </td>
                         <td class="text-center">
-                            {{ ucfirst(@$remarks) }}
+                            {{ strtoupper(@$remarks) }}
                         </td>
                     </tr>
                 @endforeach

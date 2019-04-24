@@ -46,4 +46,9 @@ class Classes extends Model
     {
         return $this->morphMany('App\Activity', 'loggable');
     }
+
+    public function drop_students()
+    {
+        return $this->hasMany('App\ClassesStudent', 'class_id')->where('status', 'drop');
+    }
 }
