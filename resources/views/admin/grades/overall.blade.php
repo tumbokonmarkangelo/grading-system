@@ -53,7 +53,7 @@
     <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Student Record</h5>
     <div class="row hide-on-print">
         <div class="col-md-2">
-            <a href="{{ !empty($username) ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
+            <a href="{{ strpos(Request::fullUrl(), '?') ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
     </div>
     @foreach ($year_levels as $yl_key => $yl)
