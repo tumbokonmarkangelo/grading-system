@@ -86,7 +86,7 @@
     <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Subject list</h5>
     <div class="row hide-on-print">
         <div class="col-md-2">
-            <a href="?print=1" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
+            <a href="{{ strpos(Request::fullUrl(), '?') ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
     </div>
     <div class="table-container-listing">
@@ -210,7 +210,7 @@
     <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Student list</h5>
     <div class="row hide-on-print">
         <div class="col-md-2">
-            <a href="?print=1" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
+            <a href="{{ strpos(Request::fullUrl(), '?') ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
     </div>
     <div class="table-container-listing">
