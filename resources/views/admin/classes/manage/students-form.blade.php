@@ -27,7 +27,7 @@
                         <option value="">Select Student</option>
                         @if ($students->count())
                             @foreach ($students as $key => $student)
-                                <option value="{{ $student->id }}" {{ $cs->student_id == $student->id ? 'selected' : '' }}>{{ $student->name, 30 }}</option>
+                                <option value="{{ $student->id }}" {{ $cs->student_id == $student->id ? 'selected' : '' }}>{{ $student->username . ' : ' . $student->name, 30 }}</option>
                             @endforeach
                         @endif
                     </select>
@@ -77,7 +77,7 @@
                 <option value="">Select Student</option>
                 @if ($students->count())
                     @foreach ($students as $key => $student)
-                        <option value="{{ $student->id }}">{{ $student->name, 30 }}</option>
+                        <option value="{{ $student->id }}">{{ $student->username . ' : ' . $student->name, 30 }}</option>
                     @endforeach
                 @endif
             </select>
