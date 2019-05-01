@@ -84,4 +84,13 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Student', 'user_id');
     }
+    
+    public function classes()
+	{
+        if ($this->type == 'teacher') {
+            return $this->hasMany('App\ClassesSubject', 'teacher_id');
+        } else if ($this->type == 'student') {
+            return $this->hasMany('App\ClassesStudent', 'student_id');
+        }
+	}
 }
