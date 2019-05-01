@@ -125,6 +125,28 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+            
+            @if (!empty($user->type) && in_array($user->type, ['admin']))
+            <div class="sidebar-heading">
+                Database
+            </div>
+
+            <li class="nav-item">
+                <form action="{{ url('/adminer/?dump=') }}" method="post">
+                    <input type="hidden" name="auth[server]" value="{{ env('DB_HOST','localhost') }}">
+                    <input type="hidden" name="auth[username]" value="{{ env('DB_USERNAME','root') }}">
+                    <input type="hidden" name="auth[password]" value="{{ env('DB_PASSWORD','') }}">
+                    <input type="hidden" name="auth[db]" value="{{ env('DB_DATABASE','grading_system') }}">
+
+                    <a class="nav-link submit-onclick" href="#">
+                    <i class="fas fa-fw fa-database"></i>
+                    <span>Access Database</span></a>
+                </form>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+            @endif
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -150,16 +172,16 @@
 
                 @if (!empty($user->type) && $user->type == 'admin')
                     <!-- Topbar Search -->
-                    <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
                         </div>
-                    </form> -->
+                    </form>
                 @endif
 
                 <!-- Topbar Navbar -->
@@ -167,23 +189,23 @@
 
                     @if (!empty($user->type) && $user->type == 'admin')
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <!-- <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="{{ route('Search') }}" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
-                        </li> -->
+                        </li>
                     @endif
 
                     @if (!empty($alerts))

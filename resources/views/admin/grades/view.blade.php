@@ -210,7 +210,7 @@
                         GWA
                     </td>
                     <td  class="text-center text-success">
-                        {{ round($points_counter / $units_counter, 2) }}
+                        {{ !empty($units_counter) ? round($points_counter / $units_counter, 2) : '-' }}
                     </td>
                     <td colspan="3" >
                     </td>
