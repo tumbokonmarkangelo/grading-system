@@ -33,11 +33,18 @@ class GradeController extends Controller
             $subjects = $subjects->whereHas('class', function ($query) use ($user) {
                 $query->where('status', 'active');
             });
+            $page_name = 'Manage Grades';
+        }
+        if ($user->type == 'admin') {
+            $subjects = $subjects->whereHas('class', function ($query) use ($user) {
+                $query->where('status', 'archive');
+            });
+            $page_name = 'Manage Grades(Archived Classes)';
         }
         $subjects = $subjects->orderBy('id', 'desc')->get();
 
         return view('admin.grades.index')
-            ->with('page_name', 'Manage Grades')
+            ->with('page_name', $page_name)
             ->with('data', @$data)
             ->with('students', @$students)
             ->with('period', @$input['period'])
@@ -136,7 +143,7 @@ class GradeController extends Controller
         }
         $classes = $classes->get();
 
-        $data = $classes[0];
+        $data = @$classes[0];
         if (!empty($input['class_id'])) {
             $data = $data->find($input['class_id']);
         }

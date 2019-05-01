@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="grades-management">
-    @if($user->type == 'admin')
+    @if(in_array($user->type, ['admin', 'assistant']))
     <div class="filter-container mb-3">
         <form action="{{ route('ViewGradeRecords') }}" method="get">
             @if (!empty($students) && $students->count())

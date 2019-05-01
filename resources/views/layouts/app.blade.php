@@ -109,13 +109,13 @@
                 <div id="collapseGrades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Module:</h6>
-                        @if (!empty($user->type) && in_array($user->type, ['teacher']))
+                        @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
                         <a class="collapse-item" href="{{ route('GradesManagement') }}">Manage</a>
                         @endif
-                        @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher']))
+                        @if (!empty($user->type) && in_array($user->type, ['admin', 'teacher', 'assistant']))
                         <a class="collapse-item" href="{{ route('ViewClassRecords') }}">Class Record</a>
                         @endif
-                        @if (!empty($user->type) && in_array($user->type, ['admin', 'student']))
+                        @if (!empty($user->type) && in_array($user->type, ['admin', 'student', 'assistant']))
                         <a class="collapse-item" href="{{ route('ViewGradeRecords') }}">All Records</a>
                         @endif
                         <a class="collapse-item" href="{{ route('ViewGrade') }}">View</a>
@@ -264,11 +264,11 @@
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                            <!-- <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{ route('UserProfile') }}">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <!-- <a class="dropdown-item" href="#">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Settings
                                 </a>
