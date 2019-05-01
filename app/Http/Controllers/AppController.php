@@ -53,8 +53,17 @@ class AppController extends Controller
 
     public function search(Request $request)
     {
+        $keyword = $request->only('keyword')['keyword'];
+        $users = User::where('username', 'like', $keyword.'%')->orWhere('first_name', 'like', $keyword.'%')->orWhere('middle_name', 'like', $keyword.'%')->orWhere('last_name', 'like', $keyword.'%')->orderBy('first_name', 'asc')->get();
+        $students = $users->where('type', 'student');
+        $teachers = $users->where('type', 'teacher');
+        $subjects = Subject::where('code', 'like', $keyword.'%')->orWhere('name', 'like', $keyword.'%')->orWhere('description', 'like', $keyword.'%')->orderBy('name', 'asc')->get();
+
         return view('search')
-            ->with('page_name', 'Search result');
+            ->with('page_name', 'Search result')
+            ->with('students', $students)
+            ->with('teachers', $teachers)
+            ->with('subjects', $subjects);
     }
 
     public function users_management(Request $request)
