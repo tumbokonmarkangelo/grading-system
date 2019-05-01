@@ -21,27 +21,47 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $input = $request->all();
+        $input_student_info = $request->only('course','year_id');
 
         if (empty($input['email'])) unset($input['email']);
 
         $user_count = User::where('type', $input['type'])->count();
 
-        $prefix = Carbon::now()->format('y'); // ID Number/Username prefix for students
-        if ($input['type'] == 'admin') $prefix = 'A'; // ID Number/Username prefix for admin
-        if ($input['type'] == 'teacher') $prefix = 'B'; // ID Number/Username prefix for teachers
-        if ($input['type'] == 'assistant') $prefix = 'C'; // ID Number/Username prefix for admin assistant
-        
-        $input['username'] = $prefix . '-' .sprintf("%'.04d", ($user_count + 1));
+        if (empty($input['username'])) {
+            $prefix = Carbon::now()->format('y'); // ID Number/Username prefix for students
+            if ($input['type'] == 'admin') $prefix = 'A'; // ID Number/Username prefix for admin
+            if ($input['type'] == 'teacher') $prefix = 'B'; // ID Number/Username prefix for teachers
+            if ($input['type'] == 'assistant') $prefix = 'C'; // ID Number/Username prefix for admin assistant
+            
+            $input['username'] = $prefix . '-' .sprintf("%'.04d", ($user_count + 1));
+        }
 
         $validator = Validator::make($input, [
             'first_name' => 'required|max:191',
             'middle_name' => 'max:191',
             'last_name' => 'required|max:191',
             'email' => 'unique:users|max:191',
-            'username' => 'required|unique:users|max:191',
             'password' => 'required|max:191',
             'type' => 'required|in:admin,teacher,student,assistant',
         ]);
+        
+
+        if (!$validator->fails() && !empty($input['username'])) {
+            $messages = [
+                'username.required' => 'ID number field is required.',
+                'username.unique' => 'ID number has already been taken.',
+            ];
+            $validator = Validator::make($input, [
+                'username' => 'required|unique:users|max:191',
+            ], $messages);
+        }
+
+        if (!$validator->fails() && !empty($input['type']) && $input['type'] == 'student') {
+            $validator = Validator::make($input_student_info, [
+                'course' => 'required|max:191',
+                'year_id' => 'required|integer',
+            ]);
+        }
 
         if ($validator->fails()) {
             $response['notifMessage'] = 'Failed request.';
@@ -57,12 +77,23 @@ class UserController extends Controller
             $user->type = $input['type'];
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->save();
+            
+            if ($user->type == 'student') {
+                if ($user->student_info) {
+                    $user->student_info()->update($input_student_info);
+                } else {
+                    $user->student_info()->create($input_student_info);
+                }
+            } else {
+                $student_info = $user->student_info()->delete();
+            }
+
             $activity['value_to'] = json_encode($user);
 
-            $user = Auth::user();
-            $activity['user_id'] = $user->id;
-            $activity['log'] = $user->name . ' create new user.';
-            $user->activities()->create($activity);
+            $log_user = Auth::user();
+            $activity['user_id'] = $log_user->id;
+            $activity['log'] = $log_user->name . ' create new user.';
+            $log_user->activities()->create($activity);
             
             $response['notifMessage'] = 'Saved request.';
             $response['resetForm'] = true;
@@ -127,11 +158,11 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $input = $request->except('id','username','course','year_id');
+        $input = $request->except('id','course','year_id');
         $input_student_info = $request->only('course','year_id');
 
         if (empty($input['email'])) unset($input['email']);
-
+        
         $user = User::find($id);
 
         $validator = Validator::make($input, [
@@ -139,10 +170,27 @@ class UserController extends Controller
             'middle_name' => 'max:191',
             'last_name' => 'required|max:191',
             'email' => $user->email == $input['email'] ? '' : 'unique:users|' .'max:191',
-            // 'username' => 'required|unique:users|max:191',
+            'username' => 'max:191',
             'password' => 'max:191',
             'type' => 'required|in:admin,teacher,student,assistant',
         ]);
+
+        if (!$validator->fails() && !empty($input['username']) && $user->username !== $input['username']) {
+            $messages = [
+                'username.required' => 'ID number field is required.',
+                'username.unique' => 'ID number has already been taken.',
+            ];
+            $validator = Validator::make($input, [
+                'username' => 'required|unique:users|max:191',
+            ], $messages);
+        }
+
+        if (!$validator->fails() && !empty($input['type']) && $input['type'] == 'student') {
+            $validator = Validator::make($input_student_info, [
+                'course' => 'required|max:191',
+                'year_id' => 'required|integer',
+            ]);
+        }
 
         if ($validator->fails()) {
             $response['notifMessage'] = 'Failed request.';
@@ -154,11 +202,12 @@ class UserController extends Controller
             $user->first_name = $input['first_name'];
             $user->middle_name = $input['middle_name'];
             $user->last_name = $input['last_name'];
-            // $user->username = $input['username'];
+            if (!empty($input['username'])) $user->username = $input['username'];
             $user->password = bcrypt($input['password']);
             $user->type = $input['type'];
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->update();
+
             if ($user->type == 'student') {
                 if ($user->student_info) {
                     $user->student_info()->update($input_student_info);

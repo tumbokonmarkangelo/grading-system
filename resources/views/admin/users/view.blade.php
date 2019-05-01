@@ -20,11 +20,11 @@
             @if ($user->type == 'student')
             <tr>
                 <td scope="row"><b>Course</b></td>
-                <td>{{ $user->course }}</td>
+                <td>{{ @$user->course }}</td>
             </tr>
             <tr>
                 <td scope="row"><b>Year Level</b></td>
-                <td>{{ $user->year_level->name }}</td>
+                <td>{{ @$user->year_level->name }}</td>
             </tr>
             @endif
         </tbody>
