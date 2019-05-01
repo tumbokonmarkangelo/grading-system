@@ -25,28 +25,35 @@ class GradeController extends Controller
             $students = $data->class->students()->whereDoesntHave('grades', function ($query) use ($data) {
                 $query->where('classes_subject_id', $data->id)->where('remarks', 'drop')->where('period', null);
             })->get();
+        
+            $drop_students = $data->class->students()->whereHas('grades', function ($query) use ($data) {
+                $query->where('classes_subject_id', $data->id)->where('remarks', 'drop')->where('period', null);
+            })->get();
         }
         
         $subjects = new ClassesSubject;
+
         if ($user->type == 'teacher') {
             $subjects = $subjects->where('teacher_id', $user->id);
             $subjects = $subjects->whereHas('class', function ($query) use ($user) {
                 $query->where('status', 'active');
             });
-            $page_name = 'Manage Grades';
         }
+
         if ($user->type == 'admin') {
             $subjects = $subjects->whereHas('class', function ($query) use ($user) {
                 $query->where('status', 'archive');
             });
             $page_name = 'Manage Grades(Archived Classes)';
         }
+
         $subjects = $subjects->orderBy('id', 'desc')->get();
 
         return view('admin.grades.index')
-            ->with('page_name', $page_name)
+            ->with('page_name', !empty($page_name) ? $page_name : 'Manage Grades')
             ->with('data', @$data)
             ->with('students', @$students)
+            ->with('drop_students', @$drop_students)
             ->with('period', @$input['period'])
             ->with('subjects', $subjects);
     }
@@ -59,9 +66,12 @@ class GradeController extends Controller
             Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->whereIn('period', ['prelim', 'midterm', 'final'])->delete();
             $response['redirect'] = route('GradesManagement', ['subject' => $input['classes_subject_id'], 'period' => @$input['period']]);
             $input['period'] = null;
-        } else {
+        } else if (@$input['remarks'] == 'putback') {
             Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->where('period', null)->where('remarks', 'drop')->forceDelete();
-            
+            Grade::where('classes_subject_id', $input['classes_subject_id'])->where('student_id', $input['student_id'])->whereIn('period', ['prelim', 'midterm', 'final'])->restore();
+            $response['redirect'] = route('GradesManagement', ['subject' => $input['classes_subject_id'], 'period' => @$input['period']]);
+            $input['period'] = null;
+        } else {
             $computations = $request->only('computations')['computations'];
             $grade_item;
             foreach ($computations as $computation_id => $value) {
@@ -101,13 +111,23 @@ class GradeController extends Controller
                 $activity['log'] = $user->name . ' update grade assigned for ' . $data->student->name . '.';
                 $data->activities()->create($activity);
                 $data->items()->delete();
+            } else if (@$input['remarks'] == 'putback') {
+                $student = User::find($input['student_id']);
+                $user = Auth::user();
+                $activity['user_id'] = $user->id;
+                $activity['log'] = $user->name . ' put back ' . $student->name . ' to class.';
+                $student->activities()->create($activity);
             } else {
                 $data = Grade::create($input);
                 $activity['value_to'] = json_encode($data);
     
                 $user = Auth::user();
                 $activity['user_id'] = $user->id;
-                $activity['log'] = $user->name . ' assign grade for ' . $data->student->name . '.';
+                if (@$input['remarks'] == 'drop') {
+                    $activity['log'] = $user->name . ' drop ' . $data->student->name . ' from class.';
+                } else {
+                    $activity['log'] = $user->name . ' assign grade for ' . $data->student->name . '.';
+                }
                 $data->activities()->create($activity);
             }
             if (!empty($grade_item)) {
@@ -199,7 +219,7 @@ class GradeController extends Controller
         $year_levels = YearLevel::get();
 
         return view('admin.grades.overall')
-            ->with('page_name', 'View Grades')
+            ->with('page_name', 'View Grades(All Records)')
             ->with('students', @$students)
             ->with('classes', @$classes)
             ->with('student', @$student)

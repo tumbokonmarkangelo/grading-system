@@ -203,7 +203,7 @@ class UserController extends Controller
             $user->middle_name = $input['middle_name'];
             $user->last_name = $input['last_name'];
             if (!empty($input['username'])) $user->username = $input['username'];
-            $user->password = bcrypt($input['password']);
+            if (!empty($input['password'])) $user->password = bcrypt($input['password']);
             $user->type = $input['type'];
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->update();
