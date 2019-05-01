@@ -288,9 +288,8 @@ input.readonly-input {
           justify-items: center;
           color: #000;
           .line {
-            height: 2px;
             width: 70%;
-            background-color: #000;
+            border-top: 1px solid #000;
           }
         }
       }

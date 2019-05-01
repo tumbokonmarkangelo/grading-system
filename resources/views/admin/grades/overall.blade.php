@@ -150,18 +150,18 @@
                                 } 
                                 if (@$student_status->remarks !== 'drop') $points_counter += round(($final * $subject->subject->units),2);
                             } else {
-                                $final = 'Incomplete';
+                                $final = 'INC';
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
                             if (@$student_status->remarks == 'drop') {
-                                $remarks = strtoupper('dropped');
+                                $remarks = strtoupper('DRP');
                             } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($prelim_remarks);
+                                $remarks = strtoupper($prelim_remarks== 'incomplete' ? 'INC' : $prelim_remarks);
                             } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($midterm_remarks);
+                                $remarks = strtoupper($midterm_remarks== 'incomplete' ? 'INC' : $midterm_remarks);
                             } else if (!empty($final_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($final_remarks);
+                                $remarks = strtoupper($final_remarks== 'incomplete' ? 'INC' : $final_remarks);
                             }
                         ?>
                         <td class="text-center">

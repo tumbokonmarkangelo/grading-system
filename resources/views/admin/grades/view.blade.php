@@ -42,7 +42,7 @@
         </div>
         <div class="logo-side-text">
             <div class="title">DILIMAN COLLEGE</div> 
-            <div class="sub">FINAL RATING SHEET</div>
+            <div class="sub">GRADING SHEET</div>
         </div>
         <div class="logo-under-text">
             {{ $data->semester->name }}
@@ -170,18 +170,18 @@
                                 } 
                                 if (@$student_status->remarks !== 'drop') $points_counter += round(($final * $subject->subject->units),2);
                             } else {
-                                $final = 'Incomplete';
+                                $final = 'INC';
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
                             if (@$student_status->remarks == 'drop') {
-                                $remarks = strtoupper('dropped');
+                                $remarks = strtoupper('DRP');
                             } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($prelim_remarks);
+                                $remarks = strtoupper($prelim_remarks== 'incomplete' ? 'INC' : $prelim_remarks);
                             } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($midterm_remarks);
+                                $remarks = strtoupper($midterm_remarks== 'incomplete' ? 'INC' : $midterm_remarks);
                             } else if (!empty($final_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($final_remarks);
+                                $remarks = strtoupper($final_remarks== 'incomplete' ? 'INC' : $final_remarks);
                             }
                         ?>
                         <td class="text-center">
@@ -266,7 +266,7 @@
                             {{ @$st->student->student_info->year_level->name }}
                         </td>
                         <?php
-                            $student_status = $subject->grades->where('student_id', $user->id)->where('period', null)->first();
+                            $student_status = $subject->grades->where('student_id', $st->student->id)->where('period', null)->first();
                             $prelim_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'prelim')->first();
                             $prelim_remarks = $prelim_grade['remarks'];
                             $prelim_grade = $prelim_grade['computed_grade'];
@@ -303,18 +303,18 @@
                                     $remarks = 'FAILED';
                                 }
                             } else {
-                                $final = 'Incomplete';
+                                $final = 'INC';
                                 $scale = doubleval(5.00);
                                 $remarks = 'FAILED';
                             }
                             if (@$student_status->remarks == 'drop') {
-                                $remarks = strtoupper('dropped');
+                                $remarks = strtoupper('DRP');
                             } else if (!empty($prelim_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($prelim_remarks);
+                                $remarks = strtoupper($prelim_remarks== 'incomplete' ? 'INC' : $prelim_remarks);
                             } else if (!empty($midterm_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($midterm_remarks);
+                                $remarks = strtoupper($midterm_remarks== 'incomplete' ? 'INC' : $midterm_remarks);
                             } else if (!empty($final_remarks) && $remarks == 'FAILED') {
-                                $remarks = strtoupper($final_remarks);
+                                $remarks = strtoupper($final_remarks== 'incomplete' ? 'INC' : $final_remarks);
                             }
                         ?>
                         <td class="text-center">
@@ -365,15 +365,15 @@ entry by encoding the asterisks and nothing follows.
             <div class="signature-container">
                 <div class="name"></div>
                 <div class="line"></div>
-                <div class="title">Dr. Carolina R. Duka</div>
+                <div class="title">VP of Academic Affairs</div>
             </div>
             <div class="signature-container">
-                <div class="name">Ma'am Emelita D. Bernabe</div>
+                <div class="name"></div>
                 <div class="line"></div>
                 <div class="title">Dean</div>
             </div>
             <div class="signature-container">
-                <div class="name">Ms. Girlie Bernardino</div>
+                <div class="name"></div>
                 <div class="line"></div>
                 <div class="title">Registrar</div>
             </div>

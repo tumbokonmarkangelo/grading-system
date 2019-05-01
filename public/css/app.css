@@ -301,8 +301,7 @@ input.readonly-input {
 }
 
 .print-view .print-container .print-footer .right-container .signature-container .line {
-  height: 2px;
   width: 70%;
-  background-color: #000;
+  border-top: 1px solid #000;
 }
 
