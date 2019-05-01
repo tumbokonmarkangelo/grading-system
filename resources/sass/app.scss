@@ -296,29 +296,31 @@ input.readonly-input {
     }
   }
 }
-.result-container {
-  background: #fff;
-  border: 1px solid #000;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  .parent-container {
-    padding: 10px;
-    border-bottom: 1px solid #000;
-    font-weight: 700;
-    .parent-sub-container {
-      font-weight: 400;
+.search-result {
+  .result-container {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    .parent-container {
+      padding: 10px;
+      border-bottom: 1px solid #000;
+      font-weight: 700;
+      .parent-sub-container {
+        font-weight: 400;
+      }
     }
-  }
-  .shortcuts-container {
-    padding: 10px 20px;
-    .shortcuts-sub-container {
-      font-weight: 400;
-    }
-    ul {
-      font-weight: 400;
-      list-style: none;
-      padding-left: 15px;
-      margin-bottom: 5px;
+    .shortcuts-container {
+      padding: 10px 20px;
+      .shortcuts-sub-container {
+        font-weight: 400;
+      }
+      ul {
+        font-weight: 400;
+        list-style: none;
+        padding-left: 15px;
+        margin-bottom: 5px;
+      }
     }
   }
 }
