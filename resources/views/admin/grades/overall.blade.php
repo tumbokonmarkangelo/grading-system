@@ -3,7 +3,7 @@
 @section('content')
 <div class="grades-management">
     @if(in_array($user->type, ['admin', 'assistant']))
-    <div class="filter-container mb-3">
+    <div class="filter-container mb-3 hide-on-print">
         <form action="{{ route('ViewGradeRecords') }}" method="get">
             @if (!empty($students) && $students->count())
             <div class="form-group">
@@ -42,7 +42,11 @@
             <tbody>
                 <tr>
                     <td>NAME: {{ $student->name  }}</td>
+                    <td>Course: {{ @$student->student_info->course  }}</td>
+                </tr>
+                <tr>
                     <td>STUDENT NO.: {{ $student->username  }}</td>
+                    <td>Year Level: {{ @$student->student_info->year_level->name  }}</td>
                 </tr>
             </tbody>
         </table>
@@ -55,6 +59,21 @@
         <div class="col-md-2">
             <a href="{{ strpos(Request::fullUrl(), '?') ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
+    </div>
+
+    <div class="mt-3 hide-on-print">        
+        <table class="table table-dark table-sm">
+            <tbody>
+                <tr>
+                    <td>NAME: {{ $student->name  }}</td>
+                    <td>Course: {{ @$student->student_info->course  }}</td>
+                </tr>
+                <tr>
+                    <td>STUDENT NO.: {{ $student->username  }}</td>
+                    <td>Year Level: {{ @$student->student_info->year_level->name  }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     @foreach ($year_levels as $yl_key => $yl)
         @if($subjects->where('class.year_id', $yl->id)->count())

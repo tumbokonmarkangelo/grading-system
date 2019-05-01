@@ -54,12 +54,12 @@
             <table class="table table-dark table-sm">
                 <tbody>
                     <tr>
-                        <td>STUDENT NO.: {{ $user->username  }}</td>
-                        <td></td>
+                        <td>NAME: {{ $user->name  }}</td>
+                        <td>Course: {{ @$user->student_info->course  }}</td>
                     </tr>
                     <tr>
-                        <td>NAME: {{ $user->name  }}</td>
-                        <td>YEAR LEVEL: {{ @$data->year_level->name  }}</td>
+                        <td>STUDENT NO.: {{ $user->username  }}</td>
+                        <td>Year Level: {{ @$user->student_info->year_level->name  }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -88,6 +88,21 @@
         <div class="col-md-2">
             <a href="{{ strpos(Request::fullUrl(), '?') ? Request::fullUrl() . '&print=1' : '?print=1' }}" target="_blank" class="btn btn-success btn-sm"><i class="fas fa-print fa-sm"></i> Print view</i></a>
         </div>
+    </div>
+
+    <div class="mt-3 hide-on-print">        
+        <table class="table table-dark table-sm">
+            <tbody>
+                <tr>
+                    <td>NAME: {{ $user->name  }}</td>
+                    <td>STUDENT NO.: {{ $user->username  }}</td>
+                </tr>
+                <tr>
+                    <td>Course: {{ @$user->student_info->course  }}</td>
+                    <td>Year Level: {{ @$user->student_info->year_level->name  }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="table-container-listing">
         <table class="table table-bordered table-sm">
@@ -222,6 +237,8 @@
                     <th scope="col">Last Name</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Middle Name</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Year Level</th>
                     <th scope="col" class="text-center">Final Grade</th>
                     <th scope="col" class="text-center">Scale</th>
                     <th scope="col" class="text-center">Remarks</th>
@@ -241,6 +258,12 @@
                         </td>
                         <td>
                             {{ $st->student->middle_name }}
+                        </td>
+                        <td>
+                            {{ @$st->student->student_info->course }}
+                        </td>
+                        <td>
+                            {{ @$st->student->student_info->year_level->name }}
                         </td>
                         <?php
                             $student_status = $subject->grades->where('student_id', $user->id)->where('period', null)->first();
