@@ -16,7 +16,7 @@
                             @endforeach
                         </select>
                     </div>
-                    @if (in_array($user->type, ['admin', 'teacher']) && !empty($data->id))
+                    @if (in_array($user->type, ['admin', 'teacher', 'assistant']) && !empty($data->id))
                     <div class="col-md-6">
                         <label for="class">Please select subject.</label>
                         <select name="classes_subject_id" class="form-control select2 submit-on-change">
@@ -71,7 +71,7 @@
         @endif
     @endif
     
-    @if (in_array($user->type, ['admin', 'teacher']))
+    @if (in_array($user->type, ['admin', 'teacher', 'assistant']))
     <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Student list</h5>
     <div class="row hide-on-print">
         <div class="col-md-2">

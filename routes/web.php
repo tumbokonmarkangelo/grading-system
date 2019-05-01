@@ -18,12 +18,14 @@ Route::get('/laravel/welcome', function () {
 Route::get('/', array('as'=>'Login','uses'=>'AppController'))->middleware('guest');;
 
 Route::post('/authenticate', array('as'=>'Authenticate','uses'=>'AppController@authenticate'));
-Route::get('/logout', array('as'=>'Logout','uses'=>'AppController@logout'));
+Route::get('/logout', array('as'=>'Logout','uses'=>'AppController@logout'))->middleware('auth');
 
-Route::post('/user/create', array('as'=>'CreateUser','uses'=>'UserController@create'));
-Route::get('/user/edit/{id}', array('as'=>'EditUser','uses'=>'UserController@edit'));
-Route::patch('/user/update/{id}', array('as'=>'UpdateUser','uses'=>'UserController@update'));
-Route::post('/user/delete', array('as'=>'DeleteUser','uses'=>'UserController@delete'));
+Route::post('/user/create', array('as'=>'CreateUser','uses'=>'UserController@create'))->middleware('auth');
+Route::get('/user/edit/{id}', array('as'=>'EditUser','uses'=>'UserController@edit'))->middleware('auth');
+Route::patch('/user/update/{id}', array('as'=>'UpdateUser','uses'=>'UserController@update'))->middleware('auth');
+Route::post('/user/delete', array('as'=>'DeleteUser','uses'=>'UserController@delete'))->middleware('auth');
+Route::get('/user/profile', array('as'=>'UserProfile','uses'=>'UserController@profile'))->middleware('auth');
+Route::get('/user/profile/manage', array('as'=>'ManageProfile','uses'=>'UserController@manage_profile'))->middleware('auth');
 
 Route::get('/panel', array('as'=>'User','uses'=>'AppController@index'))->middleware('auth');
 Route::get('/panel/users/management', array('as'=>'UsersManagement','uses'=>'AppController@users_management'))->middleware('auth');

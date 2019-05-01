@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\YearLevel;
 use Validator;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -22,6 +24,15 @@ class UserController extends Controller
 
         if (empty($input['email'])) unset($input['email']);
 
+        $user_count = User::where('type', $input['type'])->count();
+
+        $prefix = Carbon::now()->format('y'); // ID Number/Username prefix for students
+        if ($input['type'] == 'admin') $prefix = 'A'; // ID Number/Username prefix for admin
+        if ($input['type'] == 'teacher') $prefix = 'B'; // ID Number/Username prefix for teachers
+        if ($input['type'] == 'assistant') $prefix = 'C'; // ID Number/Username prefix for admin assistant
+        
+        $input['username'] = $prefix . '-' .sprintf("%'.04d", ($user_count + 1));
+
         $validator = Validator::make($input, [
             'first_name' => 'required|max:191',
             'middle_name' => 'max:191',
@@ -29,7 +40,7 @@ class UserController extends Controller
             'email' => 'unique:users|max:191',
             'username' => 'required|unique:users|max:191',
             'password' => 'required|max:191',
-            'type' => 'required|in:admin,teacher,student',
+            'type' => 'required|in:admin,teacher,student,assistant',
         ]);
 
         if ($validator->fails()) {
@@ -64,17 +75,60 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = Auth::user();
+        $data = User::find($id);
+        $year_levels = YearLevel::get();
+
+        if (!empty($data->student_info)) {
+            $data->course = $data->student_info->course;
+            $data->year_id = $data->student_info->year_id;
+        }
         
         return view('admin.users.edit')
             ->with('page_name', 'Edit User')
-            ->with('page_description', $user->updated_at ? '(last update: '.$user->updated_at->diffForHumans().')' : '')
-            ->with('data', $user);
+            ->with('page_description', $data->updated_at ? '(last update: '.$data->updated_at->diffForHumans().')' : '')
+            ->with('year_levels', $year_levels)
+            ->with('data', $data)
+            ->with('user', $user);
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        $year_levels = YearLevel::get();
+
+        if (!empty($user->student_info)) {
+            $user->course = $user->student_info->course;
+            $user->year_level = $user->student_info->year_level;
+        }
+        
+        return view('admin.users.profile')
+            ->with('page_name', 'Profile')
+            ->with('year_levels', $year_levels)
+            ->with('user', $user);
+    }
+
+    public function manage_profile()
+    {
+        $user = Auth::user();
+        $year_levels = YearLevel::get();
+
+        if (!empty($user->student_info)) {
+            $user->course = $user->student_info->course;
+            $user->year_id = $user->student_info->year_id;
+        }
+        
+        return view('admin.users.edit')
+            ->with('page_name', 'Manage Profile')
+            ->with('year_levels', $year_levels)
+            ->with('data', $user)
+            ->with('user', $user);
     }
 
     public function update(Request $request, $id)
     {
-        $input = $request->except('id','username');
+        $input = $request->except('id','username','course','year_id');
+        $input_student_info = $request->only('course','year_id');
 
         if (empty($input['email'])) unset($input['email']);
 
@@ -87,7 +141,7 @@ class UserController extends Controller
             'email' => $user->email == $input['email'] ? '' : 'unique:users|' .'max:191',
             // 'username' => 'required|unique:users|max:191',
             'password' => 'max:191',
-            'type' => 'required|in:admin,teacher,student',
+            'type' => 'required|in:admin,teacher,student,assistant',
         ]);
 
         if ($validator->fails()) {
@@ -105,14 +159,27 @@ class UserController extends Controller
             $user->type = $input['type'];
             $user->email = !empty($input['email']) ? $input['email'] : NULL;
             $user->update();
+            if ($user->type == 'student') {
+                if ($user->student_info) {
+                    $user->student_info()->update($input_student_info);
+                } else {
+                    $user->student_info()->create($input_student_info);
+                }
+            } else {
+                $student_info = $user->student_info()->delete();
+            }
             
             $activity['value_to'] = json_encode($user);
 
-            $user = Auth::user();
-            $activity['user_id'] = $user->id;
-            $activity['log'] = $user->name . ' update existing user.';
-            $user->activities()->create($activity);
+            $log_user = Auth::user();
+            $activity['user_id'] = $log_user->id;
+            $activity['log'] = $log_user->name . ' update existing user.';
+            $log_user->activities()->create($activity);
             $response['notifMessage'] = 'Update request saved.';
+            $response['redirect'] = route('EditUser', $user->id);
+            if ($user->id == $log_user->id) {
+                $response['redirect'] = route('UserProfile');
+            }
             $status = 201;
         }
 

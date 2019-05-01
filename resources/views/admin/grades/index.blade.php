@@ -41,7 +41,7 @@
             </div>
         </form>
         @else
-        <h5><i class="fas fa-info-circle fa-sm"></i> No Assigned Subjects</h5>
+        <h5><i class="fas fa-info-circle fa-sm"></i> No Manageable Subjects Found</h5>
         </div>
         @endif
     </div>
@@ -53,7 +53,7 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
-                    <th scope="col">ID/Username</th>
+                    <th scope="col">ID No.</th>
                     <th scope="col">Name</th>
                     @if (!empty($data->computations->where('period' , !empty($period) ? $period : 'prelim')))
                         @foreach ($data->computations->where('period' , !empty($period) ? $period : 'prelim') as $key => $computation)
@@ -115,8 +115,8 @@
             </tbody>
         </table>
     </div>
-    @else
-    <h5><i class="fas fa-info-circle fa-sm"></i> No Assigned Students</h5>
+    @elseif ($subjects->count()) 
+    <h5><i class="fas fa-info-circle fa-sm"></i> No Students Found</h5>
     @endif
 </div>
 @stop

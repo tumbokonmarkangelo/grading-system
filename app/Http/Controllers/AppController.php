@@ -56,12 +56,14 @@ class AppController extends Controller
         $admins = User::where('id', '!=', $user->id)->where('type', 'admin')->orderBy('first_name', 'asc')->get();
         $teachers = User::where('type', 'teacher')->orderBy('first_name', 'asc')->get();
         $students = User::where('type', 'student')->orderBy('first_name', 'asc')->get();
+        $assistants = User::where('type', 'assistant')->orderBy('first_name', 'asc')->get();
 
         return view('users-management')
             ->with('page_name', 'Users Management')
             ->with('admins', $admins)
             ->with('teachers', $teachers)
-            ->with('students', $students);
+            ->with('students', $students)
+            ->with('assistants', $assistants);
     }
 
     public function subjects_management(Request $request)

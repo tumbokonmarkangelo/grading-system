@@ -206,7 +206,7 @@
             <h5><i class="fas fa-info-circle fa-sm"></i> No grades yet.</h5>
         @endif
     </div>
-    @elseif (in_array($user->type, ['admin', 'teacher']))
+    @elseif (in_array($user->type, ['admin', 'teacher', 'assistant']))
     <h5 class="hide-on-print"><i class="fas fa-list fa-sm"></i> Student list</h5>
     <div class="row hide-on-print">
         <div class="col-md-2">
