@@ -23,13 +23,13 @@
                                 </div>
                             @endif
                             </div>
-                            <form class="user" action="{{route('Authenticate')}}" method="post">
+                            <form class="user" action="{{route('Authenticate')}}" method="post" autocomplete="off">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" name="username" class="form-control form-control-user" id="exampleInputUsername" placeholder="ID Number">
+                                    <input type="text" name="username" class="form-control form-control-user readonly-until-ready" id="exampleInputUsername" readonly placeholder="ID Number" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                                    <input type="password" name="password" class="form-control form-control-user readonly-until-ready" id="exampleInputPassword" readonly placeholder="Password" autocomplete="off">
                                 </div>
                                 <!-- <div class="form-group">
                                     <div class="custom-control custom-checkbox small">
