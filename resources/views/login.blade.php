@@ -26,7 +26,7 @@
                             <form class="user" action="{{route('Authenticate')}}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" name="username" class="form-control form-control-user" id="exampleInputUsername" placeholder="Username">
+                                    <input type="text" name="username" class="form-control form-control-user" id="exampleInputUsername" placeholder="ID Number">
                                 </div>
                                 <div class="form-group">
                                     <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">

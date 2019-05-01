@@ -22,6 +22,11 @@
             <a class="nav-link {{ $students->count() == 0 && $teachers->count() == 0 ? 'active' : '' }}" id="admins-tab" data-toggle="tab" href="#admins" role="tab" aria-controls="admins" aria-selected="false">Admins</a>
         </li>
         @endif
+        @if ($assistants->count())
+        <li class="nav-item">
+            <a class="nav-link {{ $students->count() == 0 && $teachers->count() == 0  && $admins->count() == 0 ? 'active' : '' }}" id="assistants-tab" data-toggle="tab" href="#assistants" role="tab" aria-controls="assistants" aria-selected="false">Assistants</a>
+        </li>
+        @endif
     </ul>
     <div class="tab-content" id="myTabContent">
         @if ($students->count())
@@ -30,8 +35,7 @@
                 <table class="table table-striped table-sm">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">ID Number</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
@@ -44,9 +48,6 @@
                         @foreach ($students as $key => $student)
                             <tr>
                                 <th scope="row">
-                                    {{ $student->id }}
-                                </th>
-                                <td>
                                     {{ $student->username }}
                                 </td>
                                 <td>
@@ -84,8 +85,7 @@
                 <table class="table table-striped table-sm">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">ID Number</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
@@ -96,9 +96,6 @@
                         @foreach ($teachers as $key => $teacher)
                             <tr>
                                 <th scope="row">
-                                    {{ $teacher->id }}
-                                </th>
-                                <td>
                                     {{ $teacher->username }}
                                 </td>
                                 <td>
@@ -130,8 +127,7 @@
                 <table class="table table-striped table-sm">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Username</th>
+                            <th scope="col">ID Number</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Email</th>
@@ -142,9 +138,6 @@
                         @foreach ($admins as $key => $admin)
                             <tr>
                                 <th scope="row">
-                                    {{ $admin->id }}
-                                </th>
-                                <td>
                                     {{ $admin->username }}
                                 </td>
                                 <td>
@@ -160,6 +153,48 @@
                                     <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
                                         <input type="hidden" value="{{ $admin->id }}" name="id">
                                         <a href="{{ route('EditUser', [$admin->id]) }}" class="btn btn-success btn-sm">Edit</a>
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+        @if ($assistants->count())
+        <div class="tab-pane fade show {{ $students->count() == 0 && $teachers->count() == 0 && $admins->count() == 0  ? 'active' : '' }}" id="assistants" role="tabpanel" aria-labelledby="assistants-tab">
+            <div class="user-table-container">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Number</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($assistants as $key => $assistant)
+                            <tr>
+                                <th scope="row">
+                                    {{ $assistant->username }}
+                                </td>
+                                <td>
+                                    {{ $assistant->first_name }}
+                                </td>
+                                <td>
+                                    {{ $assistant->last_name }}
+                                </td>
+                                <td>
+                                    {{ $assistant->email }}
+                                </td>
+                                <td class="text-center">
+                                    <form confirmation="true" class="ajax-submit" action="{{ route('DeleteUser') }}" method="post">
+                                        <input type="hidden" value="{{ $assistant->id }}" name="id">
+                                        <a href="{{ route('EditUser', [$assistant->id]) }}" class="btn btn-success btn-sm">Edit</a>
                                         <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                                     </form>
                                 </td>

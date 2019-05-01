@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Juan',
             'email' => 'diliman_grading_system@gmail.com',
-            'username' => 'admin',
+            'username' => 'A-0001',
             'email_verified_at' => now(),
             'type' => 'admin',
             'password' => bcrypt('password')
@@ -31,9 +31,29 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Tu',
             'email' => 'diliman_grading_system_admin@gmail.com',
-            'username' => 'admintu',
+            'username' => 'A-0002',
             'email_verified_at' => now(),
             'type' => 'admin',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Admin assistant',
+            'middle_name' => '',
+            'last_name' => 'Juan',
+            'email' => 'diliman_grading_system_assistant@gmail.com',
+            'username' => 'C-0001',
+            'email_verified_at' => now(),
+            'type' => 'assistant',
+            'password' => bcrypt('password')
+        ]);
+        DB::table('users')->insert([
+            'first_name' => 'Admin assistant',
+            'middle_name' => '',
+            'last_name' => 'Tu',
+            'email' => 'diliman_grading_system_admin_assistant@gmail.com',
+            'username' => 'C-0002',
+            'email_verified_at' => now(),
+            'type' => 'assistant',
             'password' => bcrypt('password')
         ]);
         DB::table('users')->insert([
@@ -41,7 +61,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Juan',
             'email' => 'diliman_grading_system_teacher1@gmail.com',
-            'username' => 'teacher1',
+            'username' => 'B-0001',
             'email_verified_at' => now(),
             'type' => 'teacher',
             'password' => bcrypt('password')
@@ -51,7 +71,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Tu',
             'email' => 'diliman_grading_system_teacher2@gmail.com',
-            'username' => 'teacher2',
+            'username' => 'B-0002',
             'email_verified_at' => now(),
             'type' => 'teacher',
             'password' => bcrypt('password')
@@ -61,7 +81,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Tres',
             'email' => 'diliman_grading_system_teacher3@gmail.com',
-            'username' => 'teacher3',
+            'username' => 'B-0003',
             'email_verified_at' => now(),
             'type' => 'teacher',
             'password' => bcrypt('password')
@@ -71,7 +91,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Juan',
             'email' => 'diliman_grading_system_student1@gmail.com',
-            'username' => 'student1',
+            'username' => '19-0001',
             'email_verified_at' => now(),
             'type' => 'student',
             'password' => bcrypt('password')
@@ -81,7 +101,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Tu',
             'email' => 'diliman_grading_system_student2@gmail.com',
-            'username' => 'student2',
+            'username' => '19-0002',
             'email_verified_at' => now(),
             'type' => 'student',
             'password' => bcrypt('password')
@@ -91,7 +111,7 @@ class UsersTableSeeder extends Seeder
             'middle_name' => '',
             'last_name' => 'Tres',
             'email' => 'diliman_grading_system_student3@gmail.com',
-            'username' => 'student3',
+            'username' => '19-0003',
             'email_verified_at' => now(),
             'type' => 'student',
             'password' => bcrypt('password')

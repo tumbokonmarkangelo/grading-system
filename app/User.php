@@ -25,9 +25,7 @@ class User extends Authenticatable
         'email',
         'username',
         'type',
-        'image',
-        'semester_id',
-        'year_id'
+        'image'
     ];
 
     /**
@@ -80,5 +78,10 @@ class User extends Authenticatable
     public function activities()
     {
         return $this->morphMany('App\Activity', 'loggable');
+    }
+
+    public function student_info()
+    {
+        return $this->hasOne('App\Student', 'user_id');
     }
 }

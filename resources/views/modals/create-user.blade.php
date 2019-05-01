@@ -43,6 +43,7 @@
                                         <option value="student">Student</option>
                                         <option value="teacher">Teacher</option>
                                         <option value="admin">Admin</option>
+                                        <option value="assistant">Assistant</option>
                                     </select>
                                 </div>
                             </div>
@@ -50,10 +51,10 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <input type="text" name="username" placeholder="Username" class="form-control" required>
+                                    <input type="password" name="password" id="password" placeholder="Password" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="password" name="password" placeholder="Password" class="form-control" required>
+                                    <input type="password" id="confirm_password" placeholder="Confirm Password" class="form-control change-password">
                                 </div>
                             </div>
                         </div>
