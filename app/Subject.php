@@ -36,4 +36,9 @@ class Subject extends Model
     {
         return $this->morphMany('App\Activity', 'loggable');
     }
+    
+    public function classes()
+	{
+		return $this->hasMany('App\ClassesSubject', 'subject_id');
+	}
 }
