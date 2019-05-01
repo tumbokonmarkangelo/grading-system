@@ -29,7 +29,7 @@ class Classes extends Model
 
     public function students()
     {
-        return $this->hasMany('App\ClassesStudent', 'class_id');
+        return $this->hasMany('App\ClassesStudent', 'class_id')->where('status', 'active');
     }
     
     public function semester()
