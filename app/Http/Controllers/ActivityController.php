@@ -9,7 +9,7 @@ class ActivityController extends Controller
 {
     public function index(Request $request)
     {
-        $activities = Activity::get();
+        $activities = Activity::orderBy('created_at', 'desc')->get();
 
         return view('activity-logs')
             ->with('data', $activities)
