@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <select name="type" class="form-control">
+                                    <select name="type" class="form-control select-user-type">
                                         <option value="student">Student</option>
                                         <option value="teacher">Teacher</option>
                                         <option value="admin">Admin</option>
@@ -51,10 +51,40 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" class="input-username">
+                                            </div>
+                                        </div>
+                                        <input type="text" name="username" id="username" placeholder="ID Number" class="form-control" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
                                     <input type="password" name="password" id="password" placeholder="Password" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
                                     <input type="password" id="confirm_password" placeholder="Confirm Password" class="form-control change-password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group student-info-container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="course">Course</label>
+                                    <input type="text" name="course" id="course" placeholder="Course" class="form-control" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="year_id">Year Level</label>
+                                    <select id="year_id" name="year_id" class="form-control" required>
+                                        @foreach ($year_levels as $key => $year_level)
+                                            <option value="{{ $year_level->id }}">{{ $year_level->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>

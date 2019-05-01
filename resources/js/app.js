@@ -165,4 +165,23 @@ $(document).ready(function() {
     setTimeout(() => {
         $('.readonly-until-ready').prop('readonly', false);
     }, 1000);
+
+    $('.input-username').on('change', function () {
+        if ($(this).prop('checked')) {
+            $('#username').prop('disabled', false);
+        } else {
+            $('#username').prop('disabled', true);
+        }
+    });
+
+    $('.select-user-type').on('change', function () {
+        var container = $('.student-info-container')
+        if ($(this).val() == 'student') {
+            container.show();
+            container.find(':input').prop('disabled', false);
+        } else {
+            container.hide();
+            container.find(':input').prop('disabled', true);
+        }
+    });
 });

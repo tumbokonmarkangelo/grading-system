@@ -8,6 +8,7 @@ use App\User;
 use App\Subject;
 use App\Classes;
 use App\Activity;
+use App\YearLevel;
 
 class AppController extends Controller
 {
@@ -57,9 +58,11 @@ class AppController extends Controller
         $teachers = User::where('type', 'teacher')->orderBy('first_name', 'asc')->get();
         $students = User::where('type', 'student')->orderBy('first_name', 'asc')->get();
         $assistants = User::where('type', 'assistant')->orderBy('first_name', 'asc')->get();
+        $year_levels = YearLevel::get();
 
         return view('users-management')
             ->with('page_name', 'Users Management')
+            ->with('year_levels', $year_levels)
             ->with('admins', $admins)
             ->with('teachers', $teachers)
             ->with('students', $students)

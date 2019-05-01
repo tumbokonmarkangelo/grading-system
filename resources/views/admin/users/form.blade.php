@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-4">
                 <label for="type">User Type</label>
-                <select name="type" id="type" class="form-control">
+                <select name="type" id="type" class="form-control select-user-type">
                     <option value="student">Student</option>
                     <option value="teacher">Teacher</option>
                     <option value="admin">Admin</option>
@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md-4">
                 <label for="username">ID Number</label>
-                <input type="text" name="username" id="username" placeholder="ID Number" class="form-control readonly-input" disabled>
+                <input type="text" name="username" id="username" placeholder="ID Number" class="form-control {{!empty($user->type) && $user->type == 'admin' ? '' : 'readonly-input'}}" {{!empty($user->type) && $user->type == 'admin' ? '' : 'disabled'}}>
             </div>
         </div>
     </div>
@@ -64,8 +64,7 @@
             </div>
         </div>
     </div>
-    @if (!empty($data->type) && $data->type == 'student')
-    <div class="form-group">
+    <div class="form-group student-info-container" style="{{ !empty($data->type) && $data->type == 'student' ? '' : 'display: none;' }}">
         <div class="row">
             <div class="col-md-4">
                 <label for="course">Course</label>
@@ -81,7 +80,6 @@
             </div>
         </div>
     </div>
-    @endif
 </div>
 <hr/>
 <div class="form-group">
