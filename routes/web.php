@@ -28,7 +28,7 @@ Route::get('/user/profile', array('as'=>'UserProfile','uses'=>'UserController@pr
 Route::get('/user/profile/manage', array('as'=>'ManageProfile','uses'=>'UserController@manage_profile'))->middleware('auth');
 
 Route::get('/panel', array('as'=>'User','uses'=>'AppController@index'))->middleware('auth');
-Route::get('/panel/search', array('as'=>'Search','uses'=>'AppController@index'))->middleware('auth');
+Route::get('/panel/search', array('as'=>'Search','uses'=>'AppController@search'))->middleware('auth');
 Route::get('/panel/users/management', array('as'=>'UsersManagement','uses'=>'AppController@users_management'))->middleware('auth');
 Route::get('/panel/subjects/management', array('as'=>'SubjectsManagement','uses'=>'AppController@subjects_management'))->middleware('auth');
 Route::get('/panel/classes/management', array('as'=>'ClassesManagement','uses'=>'AppController@classes_management'))->middleware('auth');

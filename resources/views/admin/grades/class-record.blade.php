@@ -126,7 +126,7 @@
                             {{ $st->student->middle_name }}
                         </td>
                         <?php
-                            $student_status = $subject->grades->where('student_id', $user->id)->where('period', null)->first();
+                            $student_status = $subject->grades->where('student_id', $st->student->id)->where('period', null)->first();
                             $prelim_grade = $subject->grades->where('student_id', $st->student->id)->where('period', 'prelim')->first();
                             $prelim_remarks = $prelim_grade['remarks'];
                             $prelim_grade = $prelim_grade['computed_grade'];
