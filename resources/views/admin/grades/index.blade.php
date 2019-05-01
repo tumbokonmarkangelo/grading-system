@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="grades-management">
-    <div class="filter-container mb-3">
+    <div class="filter-container mb-3 hide-on-print">
         @if ($subjects->count())
         <form action="{{ route('GradesManagement') }}" method="get">
             <div class="form-group">
@@ -42,7 +42,6 @@
         </form>
         @else
         <h5><i class="fas fa-info-circle fa-sm"></i> No Manageable Subjects Found</h5>
-        </div>
         @endif
     </div>
     
@@ -53,7 +52,7 @@
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
-                    <th scope="col">ID No.</th>
+                    <th scope="col" style="width: 80px">ID No.</th>
                     <th scope="col">Name</th>
                     @if (!empty($data->computations->where('period' , !empty($period) ? $period : 'prelim')))
                         @foreach ($data->computations->where('period' , !empty($period) ? $period : 'prelim') as $key => $computation)
@@ -74,7 +73,7 @@
                                 <input type="hidden" name="student_id" value="{{ $d->student->id }}">
                                 <input type="hidden" name="period" value="{{ !empty($period) ? $period : 'prelim' }}">
                             </form>
-                            <form id="dropForm{{$key}}" class="ajax-submit" action="{{ route('AssignGrades', [$data->id]) }}" method="post" confirmation="true" confirmation-note="Once dropped, you may not be able to manage this student grades for this class subject." confirmation-cancelled-note="Student remain active.">
+                            <form id="dropForm{{$key}}" class="ajax-submit" action="{{ route('AssignGrades', [$data->id]) }}" method="post" confirmation="true" confirmation-note="Once dropped, you can still put this student back to this class subject." confirmation-cancelled-note="Student remain active.">
                                 <input type="hidden" name="classes_subject_id" value="{{ $data->id }}">
                                 <input type="hidden" name="student_id" value="{{ $d->student->id }}">
                                 <input type="hidden" name="period" value="{{ !empty($period) ? $period : 'prelim' }}">
@@ -117,6 +116,50 @@
     </div>
     @elseif ($subjects->count()) 
     <h5><i class="fas fa-info-circle fa-sm"></i> No Students Found</h5>
+    @endif
+    
+    @if (!empty($drop_students) && $drop_students->count())
+    <h5><i class="fas fa-list fa-sm"></i> Droppped list</h5>
+    <div class="table-container-listing">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 80px">ID No.</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Middle Name</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($drop_students as $key => $ds)
+                    <tr class="computation-container">
+                        <th scope="row">
+                            <form id="putBackForm{{$key}}" class="ajax-submit" action="{{ route('AssignGrades', [$data->id]) }}" method="post" confirmation="true" confirmation-note="Once put back, you can manage this student grades for this class subject." confirmation-cancelled-note="Student remain dropped.">
+                                <input type="hidden" name="classes_subject_id" value="{{ $data->id }}">
+                                <input type="hidden" name="student_id" value="{{ $ds->student->id }}">
+                                <input type="hidden" name="period" value="{{ !empty($period) ? $period : 'prelim' }}">
+                                <input type="hidden" name="remarks" value="putback">
+                            </form>
+                            {{ $ds->student->username }}
+                        </th>
+                        <td>
+                            {{ $ds->student->last_name }}
+                        </td>
+                        <td>
+                            {{ $ds->student->first_name }}
+                        </td>
+                        <td>
+                            {{ $ds->student->middle_name }}
+                        </td>
+                        <td class="text-center">
+                            <button form="putBackForm{{$key}}" class="btn btn-success btn-sm" type="submit"><i class="fas fa-arrow-up"></i> Put back to class</button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     @endif
 </div>
 @stop
