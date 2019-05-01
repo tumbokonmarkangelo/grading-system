@@ -184,4 +184,8 @@ $(document).ready(function() {
             container.find(':input').prop('disabled', true);
         }
     });
+
+    $('.submit-onclick').on('click', function () {
+        $(this).closest('form').submit();
+    });
 });
