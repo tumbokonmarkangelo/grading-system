@@ -51,6 +51,12 @@ class AppController extends Controller
             ->with('page_name', 'Welcome!');
     }
 
+    public function search(Request $request)
+    {
+        return view('search')
+            ->with('page_name', 'Search result');
+    }
+
     public function users_management(Request $request)
     {
         $user = Auth::user();

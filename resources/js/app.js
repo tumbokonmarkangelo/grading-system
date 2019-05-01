@@ -185,7 +185,10 @@ $(document).ready(function() {
         }
     });
 
-    $('.submit-onclick').on('click', function () {
-        $(this).closest('form').submit();
+    $('.database-access').on('click', function () {
+        var form = $(this).closest('form');
+        if (confirm("Copy this database password: " + form.find('#dbPassword').val())) {
+            form.submit();
+        }
     });
 });

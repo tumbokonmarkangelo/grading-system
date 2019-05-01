@@ -132,13 +132,13 @@
             </div>
 
             <li class="nav-item">
-                <form action="{{ url('/adminer/?dump=') }}" method="post">
+                <form action="{{ url('/adminer/?dump=') }}" method="post" target="_blank">
                     <input type="hidden" name="auth[server]" value="{{ env('DB_HOST','localhost') }}">
                     <input type="hidden" name="auth[username]" value="{{ env('DB_USERNAME','root') }}">
-                    <input type="hidden" name="auth[password]" value="{{ env('DB_PASSWORD','') }}">
+                    <input type="hidden" name="auth[password]" value="{{ env('DB_PASSWORD','') }}" id="dbPassword">
                     <input type="hidden" name="auth[db]" value="{{ env('DB_DATABASE','grading_system') }}">
 
-                    <a class="nav-link submit-onclick" href="#">
+                    <a class="nav-link database-access" href="#">
                     <i class="fas fa-fw fa-database"></i>
                     <span>Access Database</span></a>
                 </form>
@@ -172,7 +172,7 @@
 
                 @if (!empty($user->type) && $user->type == 'admin')
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <form action="{{ route('Search') }}" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
@@ -194,7 +194,7 @@
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
+                                <form action="{{ route('Search') }}" method="get" class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" name="keyword" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
