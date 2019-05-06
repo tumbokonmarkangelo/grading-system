@@ -9,6 +9,24 @@
     @endif
     
     @if ($data->count())
+    <div class="table-filter-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 offset-md-8">
+                    <form action="{{ route('ClassesManagement') }}" method="get" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" name="keyword" value="{{ @$keyword }}" class="form-control border-0 small" placeholder="Search class by code" aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="table-container-listing">
         <table class="table table-striped table-sm">
             <thead>
