@@ -53,7 +53,7 @@ class AppController extends Controller
 
     public function search(Request $request)
     {
-        $keyword = $request->only('keyword')['keyword'];
+        $keyword = @$request->only('keyword')['keyword'];
         $users = User::where('username', 'like', $keyword.'%')->orWhere('first_name', 'like', $keyword.'%')->orWhere('middle_name', 'like', $keyword.'%')->orWhere('last_name', 'like', $keyword.'%')->orderBy('first_name', 'asc')->get();
         $students = $users->where('type', 'student');
         $teachers = $users->where('type', 'teacher');
@@ -94,8 +94,12 @@ class AppController extends Controller
 
     public function classes_management(Request $request)
     {
+        $keyword = @$request->only('keyword')['keyword'];
         $user = Auth::user();
         $data = new Classes;
+        if (!empty($keyword)) {
+            $data = $data->where('code', 'like', $keyword.'%');
+        }
         if ($user->type == 'teacher') {
             $data = $data->whereHas('subjects', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
@@ -106,6 +110,7 @@ class AppController extends Controller
         
         return view('classes-management')
             ->with('page_name', 'Classes Management')
+            ->with('keyword', @$keyword)
             ->with('data', $data);
     }
 

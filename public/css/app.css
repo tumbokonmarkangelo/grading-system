@@ -337,3 +337,7 @@ input.readonly-input {
   margin-bottom: 5px;
 }
 
+.table-filter-container {
+  margin: 10px 0;
+}
+
