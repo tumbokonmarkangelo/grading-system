@@ -13,7 +13,7 @@
                         <select name="username" class="form-control select2 submit-on-change">
                             <option value="">Select a student</option>
                             @foreach ($students as $key => $st)
-                                <option value="{{ $st->username }}" {{ $st->username == @$username ? 'selected' : '' }}>{{ $st->name }}</option>
+                                <option value="{{ $st->username }}" {{ $st->username == @$username ? 'selected' : '' }}>{{ $st->username . ' : ' .$st->name }}</option>
                             @endforeach
                         </select>
                     </div>
