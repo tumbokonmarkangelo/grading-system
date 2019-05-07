@@ -86,9 +86,17 @@ class AppController extends Controller
 
     public function subjects_management(Request $request)
     {
-        $data = Subject::orderBy('code', 'asc')->get();
+        $keyword = @$request->only('keyword')['keyword'];
+        $data = new Subject;
+        if (!empty($keyword)) {
+            $data = $data->where('code', 'like', $keyword.'%');
+            $data = $data->orWhere('name', 'like', $keyword.'%');
+            $data = $data->orWhere('description', 'like', $keyword.'%');
+        }
+        $data = $data->orderBy('code', 'asc')->get();
         return view('subjects-management')
             ->with('page_name', 'Subjects Management')
+            ->with('keyword', @$keyword)
             ->with('data', $data);
     }
 
