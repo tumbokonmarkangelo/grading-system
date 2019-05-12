@@ -11,6 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.setResourceRoot('../');
+
 mix.styles([
             'node_modules/startbootstrap-sb-admin-2/css/sb-admin-2.css',
             'node_modules/@fortawesome/fontawesome-free/css/all.min.css',
